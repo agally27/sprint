@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Keyboard, Platform, StyleSheet, TextInput, View } from "react-native";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import Animated, { FadeIn, FadeInDown, FadeOut, Layout } from "react-native-reanimated";
 import {
   SUGGESTED_GOALS,
@@ -46,10 +46,11 @@ export function GoalFlow({ firstRun }: { firstRun: boolean }) {
   const dispatch = useStore((s) => s.dispatch);
   const aiEnabled = useStore((s) => s.state.preferences.ai);
   const missionCount = useStore((s) => Object.keys(s.state.missions).length);
+  const params = useLocalSearchParams<{ text?: string }>();
 
   const [step, setStep] = useState<Step>("input");
-  const [text, setText] = useState("");
-  const [source, setSource] = useState<"typed" | "voice" | "suggested">("typed");
+  const [text, setText] = useState(params.text ?? "");
+  const [source, setSource] = useState<"typed" | "voice" | "suggested">(params.text ? "voice" : "typed");
   const [timeframe, setTimeframe] = useState<Timeframe>("month");
   const [deadline, setDeadline] = useState<number | undefined>();
   const [showCalendar, setShowCalendar] = useState(false);

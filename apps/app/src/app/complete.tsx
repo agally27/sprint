@@ -33,6 +33,13 @@ export default function Complete() {
   const [followUp, setFollowUp] = useState<number | undefined>();
   const [reflection, setReflection] = useState("");
   const [reflected, setReflected] = useState(false);
+  const [notifAsked, setNotifAsked] = useState(false);
+  const askNotifications = state.preferences.notifications.enabled && (state.permissions.notifications === "unknown" || state.permissions.notifications === "undetermined") && !notifAsked;
+  const requestNotifications = useCallback(async () => {
+    setNotifAsked(true);
+    const r = await providers.notifications.requestPermission();
+    dispatch({ type: "permissions/set", key: "notifications", state: r });
+  }, [dispatch]);
   const celebrated = useRef(false);
   const leaving = useRef(false);
 
@@ -178,6 +185,21 @@ export default function Complete() {
           </View>
         ) : null}
 
+        {askNotifications ? (
+          <View style={[styles.nudge, { borderColor: colors.line }]} testID="notification-nudge">
+            <View style={{ flex: 1, marginRight: space.md }}>
+              <Text variant="smallStrong">Want a quiet nudge when a sprint ends?</Text>
+              <Text variant="caption" tone="muted" style={{ marginTop: 2 }}>
+                Only sprint endings and one morning suggestion. You control all of it in settings.
+              </Text>
+            </View>
+            <View style={{ gap: 6 }}>
+              <Button label="Allow" size="sm" onPress={requestNotifications} testID="nudge-allow" />
+              <Button label="Not now" size="sm" variant="ghost" onPress={() => { setNotifAsked(true); dispatch({ type: "permissions/set", key: "notifications", state: "denied" }); }} testID="nudge-skip" />
+            </View>
+          </View>
+        ) : null}
+
         <SectionHeader title="What next?" />
         {next.best ? (
           <NextSprintCard rec={next.best} prominent={false} testID="complete-next" />
@@ -232,6 +254,7 @@ const styles = StyleSheet.create({
   reflect: { marginTop: space.xl, padding: space.lg, borderRadius: radius.lg, borderWidth: 1 },
   input: { marginTop: space.md, borderWidth: 1, borderRadius: radius.md, paddingHorizontal: 14, height: 48, fontFamily: fonts.sans, fontSize: 16 },
   empty: { borderWidth: 1, borderStyle: "dashed", borderRadius: radius.lg, padding: space.xl },
+  nudge: { flexDirection: "row", alignItems: "center", marginTop: space.xl, padding: space.lg, borderWidth: 1, borderRadius: radius.lg },
   rowActions: { flexDirection: "row", justifyContent: "center", gap: space.xxl, marginTop: space.xl },
   textBtn: { minHeight: 44, justifyContent: "center" },
 });

@@ -12,8 +12,8 @@ export function createDemoState(now: number): AppState {
   const start = now - 6 * DAY;
   let s = createInitialState(start);
 
-  const website = planLocal({ goalText: "Launch my website", timeframe: "month", now: start });
-  s = reduce(s, { type: "mission/create", goalText: "Launch my website", plan: website, source: "demo", now: start, priority: 1 });
+  const website = planLocal({ goalText: "Launch my website in 30 days", now: start });
+  s = reduce(s, { type: "mission/create", goalText: "Launch my website in 30 days", plan: website, source: "demo", now: start, priority: 1 });
   const websiteId = Object.values(s.missions)[0]!.id;
 
   const run = planLocal({ goalText: "Run a 10K", timeframe: "long_term", now: start + HOUR });

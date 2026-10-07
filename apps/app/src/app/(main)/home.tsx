@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { activeSession, formatClock, greeting, sessionTimer, sprintsCompletedOn, timer, toDay, topCoachMessage, visibleMissions } from "@sprint/core";
+import { activeSession, formatClock, greeting, sessionTimer, sprintsCompletedOn, sprintsScheduledOn, timer, toDay, topCoachMessage, visibleMissions } from "@sprint/core";
 import { Screen } from "@/components/Screen";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
@@ -16,12 +16,15 @@ import { MomentumMeter } from "@/components/MomentumMeter";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Notice } from "@/components/Notice";
 import { Wordmark } from "@/components/Wordmark";
+import { HomeVoice } from "@/components/HomeVoice";
+import { Ring } from "@/components/Ring";
 import { useStore } from "@/store/store";
 import { useNext } from "@/hooks/useNext";
 import { useNow } from "@/hooks/useNow";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useTheme } from "@/theme/ThemeProvider";
-import { radius, space } from "@/theme/tokens";
+import { categoryColor, radius, space } from "@/theme/tokens";
+import { startSprint } from "@/lib/actions";
 
 const QUICK_TIMES = [5, 15, 25, 45];
 
@@ -56,13 +59,64 @@ export default function Home() {
           {todayCount === 0 ? "What are you moving forward today?" : todayCount === 1 ? "One sprint done today. Nice start." : `${todayCount} sprints done today.`}
         </Text>
       </View>
-      {isDesktop ? null : (
-        <Pressable onPress={() => router.push("/settings")} style={styles.iconBtn} accessibilityRole="button" accessibilityLabel="Settings" testID="open-settings">
-          <Icon name="settings" size={22} color={colors.textMuted} />
-        </Pressable>
-      )}
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+        {missions.length > 0 ? <HomeVoice /> : null}
+        {isDesktop ? null : (
+          <Pressable onPress={() => router.push("/settings")} style={styles.iconBtn} accessibilityRole="button" accessibilityLabel="Settings" testID="open-settings">
+            <Icon name="settings" size={22} color={colors.textMuted} />
+          </Pressable>
+        )}
+      </View>
     </View>
   );
+
+  const today = toDay(Date.now());
+  const daily = (state.dailyMission?.day === today ? state.dailyMission.sprintIds : []).map((id) => state.sprints[id]).filter((s): s is NonNullable<typeof s> => !!s && s.status === "planned");
+  const upcoming = sprintsScheduledOn(state, today).filter((s) => !daily.some((d) => d.id === s.id)).slice(0, 4);
+  const dailyBlock =
+    daily.length > 1 && !session ? (
+      <View>
+        <SectionHeader title="Today's mission" />
+        <View style={[styles.daily, { backgroundColor: colors.surface, borderColor: colors.line }]} testID="daily-mission">
+          {daily.map((s, i) => {
+            const m = state.missions[s.missionId];
+            return (
+              <Pressable key={s.id} onPress={() => startSprint(s.id)} style={[styles.dailyRow, i > 0 ? { borderTopWidth: 1, borderTopColor: colors.line } : null]} scaleTo={0.995} accessibilityRole="button" accessibilityLabel={`Start ${s.title}`}>
+                <Ring size={14} progress={1} color={m ? categoryColor[m.category] : colors.accent} stroke={3} />
+                <View style={{ flex: 1, marginLeft: 12 }}>
+                  <Text variant={i === 0 ? "bodyStrong" : "body"} numberOfLines={1}>
+                    {s.title}
+                  </Text>
+                  <Text variant="caption" tone="muted" numberOfLines={1}>
+                    {i === 0 ? "Important" : "Optional"} · {m?.title} · {s.durationMin} min
+                  </Text>
+                </View>
+                <Icon name="play" size={14} color={colors.textFaint} />
+              </Pressable>
+            );
+          })}
+        </View>
+        <Text variant="caption" tone="faint" style={{ marginTop: 8 }}>
+          One important sprint, a couple optional. Then stop. That's a good day.
+        </Text>
+      </View>
+    ) : null;
+  const upcomingBlock =
+    isDesktop && upcoming.length > 0 ? (
+      <View>
+        <SectionHeader title="Also planned today" />
+        {upcoming.map((s) => (
+          <View key={s.id} style={[styles.upcomingRow, { borderTopColor: colors.line }]}>
+            <Text variant="small" numberOfLines={1} style={{ flex: 1 }}>
+              {s.title}
+            </Text>
+            <Text variant="caption" tone="muted">
+              {s.durationMin} min
+            </Text>
+          </View>
+        ))}
+      </View>
+    ) : null;
 
   const mainColumn = (
     <View style={{ flex: 1 }}>
@@ -141,12 +195,17 @@ export default function Home() {
       {header}
       {isDesktop ? (
         <View style={{ flexDirection: "row", gap: space.xxl, marginTop: space.lg }}>
-          <View style={{ flex: 1.25 }}>{mainColumn}</View>
+          <View style={{ flex: 1.25 }}>
+            {mainColumn}
+            {dailyBlock}
+            {upcomingBlock}
+          </View>
           <View style={{ flex: 1 }}>{sideColumn}</View>
         </View>
       ) : (
         <>
           {mainColumn}
+          {dailyBlock}
           {sideColumn}
         </>
       )}
@@ -161,4 +220,7 @@ const styles = StyleSheet.create({
   quickRow: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 8, marginTop: space.lg },
   empty: { borderWidth: 1, borderStyle: "dashed", borderRadius: radius.xl, padding: space.xxl, alignItems: "center", marginTop: space.xxl },
   momentum: { borderWidth: 1, borderRadius: radius.lg, padding: space.lg },
+  daily: { borderWidth: 1, borderRadius: radius.lg, paddingHorizontal: space.lg },
+  dailyRow: { flexDirection: "row", alignItems: "center", paddingVertical: 12, minHeight: 56 },
+  upcomingRow: { flexDirection: "row", alignItems: "center", paddingVertical: 10, borderTopWidth: 1 },
 });
