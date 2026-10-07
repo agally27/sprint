@@ -2,7 +2,7 @@
   "name": "sprint",
   "private": true,
   "version": "0.1.0",
-  "description": "Sprint — turn goals into momentum.",
+  "description": "Sprint \u2014 turn goals into momentum.",
   "packageManager": "pnpm@10.28.0",
   "engines": {
     "node": ">=20"
@@ -14,8 +14,8 @@
     "build:web": "pnpm --filter @sprint/app build:web",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
-    "test:e2e": "pnpm --filter @sprint/app test:e2e",
-    "lint": "pnpm -r lint"
+    "test:e2e": "pnpm --filter @sprint/app exec playwright test e2e/journeys.spec.ts",
+    "shots": "SHOTS=1 pnpm --filter @sprint/app exec playwright test e2e/visual.spec.ts"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

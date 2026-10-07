@@ -7,10 +7,22 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts, Manrope_200ExtraLight, Manrope_300Light, Manrope_400Regular, Manrope_500Medium, Manrope_600SemiBold, Manrope_700Bold, Manrope_800ExtraBold } from "@expo-google-fonts/manrope";
 import { InstrumentSerif_400Regular, InstrumentSerif_400Regular_Italic } from "@expo-google-fonts/instrument-serif";
 import { ThemeProvider, useTheme } from "@/theme/ThemeProvider";
+import { Fallback } from "@/components/Fallback";
 import { useStore } from "@/store/store";
 import { useAppEffects } from "@/store/effects";
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
+
+/** Shown by Expo Router if a screen throws. State is persisted on every change, so nothing is lost. */
+export function ErrorBoundary({ retry }: { error: Error; retry: () => Promise<void> }) {
+  return (
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <Fallback title="Something interrupted Sprint." body="Your progress is safe. Everything you did is already saved on this device." actionLabel="Try again" onAction={() => void retry()} />
+      </ThemeProvider>
+    </SafeAreaProvider>
+  );
+}
 
 function Shell() {
   const { colors, isDark } = useTheme();

@@ -15,7 +15,8 @@ export default defineConfig({
     baseURL: `http://localhost:${PORT}`,
     trace: "retain-on-failure",
     launchOptions: {
-      executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH ?? "/opt/pw-browsers/chromium",
+      // A pre-installed Chromium (this sandbox) or Playwright's own when the variable is empty.
+      ...(process.env.PLAYWRIGHT_CHROMIUM_PATH !== "" ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH ?? "/opt/pw-browsers/chromium" } : {}),
     },
   },
   webServer: {

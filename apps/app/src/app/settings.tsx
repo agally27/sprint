@@ -28,7 +28,15 @@ function Row({ label, detail, value, onChange, testID }: { label: string; detail
           </Text>
         ) : null}
       </View>
-      <Switch value={value} onValueChange={onChange} trackColor={{ true: colors.accent, false: colors.lineStrong }} thumbColor="#fff" accessibilityLabel={label} testID={testID} />
+      <Switch
+        value={value}
+        onValueChange={onChange}
+        trackColor={{ true: colors.accent, false: colors.lineStrong }}
+        thumbColor="#fff"
+        {...({ activeThumbColor: "#fff" } as object)}
+        accessibilityLabel={label}
+        testID={testID}
+      />
     </View>
   );
 }

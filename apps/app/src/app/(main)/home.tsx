@@ -71,12 +71,15 @@ export default function Home() {
   );
 
   const today = toDay(Date.now());
-  const daily = (state.dailyMission?.day === today ? state.dailyMission.sprintIds : []).map((id) => state.sprints[id]).filter((s): s is NonNullable<typeof s> => !!s && s.status === "planned");
-  const upcoming = sprintsScheduledOn(state, today).filter((s) => !daily.some((d) => d.id === s.id)).slice(0, 4);
+  const featuredId = next.best?.sprint.id;
+  const daily = (state.dailyMission?.day === today ? state.dailyMission.sprintIds : [])
+    .map((id) => state.sprints[id])
+    .filter((s): s is NonNullable<typeof s> => !!s && s.status === "planned" && s.id !== featuredId);
+  const upcoming = sprintsScheduledOn(state, today).filter((s) => !daily.some((d) => d.id === s.id) && s.id !== featuredId).slice(0, 4);
   const dailyBlock =
-    daily.length > 1 && !session ? (
+    daily.length > 0 && !session ? (
       <View>
-        <SectionHeader title="Today's mission" />
+        <SectionHeader title="Also today" />
         <View style={[styles.daily, { backgroundColor: colors.surface, borderColor: colors.line }]} testID="daily-mission">
           {daily.map((s, i) => {
             const m = state.missions[s.missionId];
@@ -84,11 +87,11 @@ export default function Home() {
               <Pressable key={s.id} onPress={() => startSprint(s.id)} style={[styles.dailyRow, i > 0 ? { borderTopWidth: 1, borderTopColor: colors.line } : null]} scaleTo={0.995} accessibilityRole="button" accessibilityLabel={`Start ${s.title}`}>
                 <Ring size={14} progress={1} color={m ? categoryColor[m.category] : colors.accent} stroke={3} />
                 <View style={{ flex: 1, marginLeft: 12 }}>
-                  <Text variant={i === 0 ? "bodyStrong" : "body"} numberOfLines={1}>
+                  <Text variant="body" numberOfLines={1}>
                     {s.title}
                   </Text>
                   <Text variant="caption" tone="muted" numberOfLines={1}>
-                    {i === 0 ? "Important" : "Optional"} · {m?.title} · {s.durationMin} min
+                    Optional · {m?.title} · {s.durationMin} min
                   </Text>
                 </View>
                 <Icon name="play" size={14} color={colors.textFaint} />
@@ -97,7 +100,7 @@ export default function Home() {
           })}
         </View>
         <Text variant="caption" tone="faint" style={{ marginTop: 8 }}>
-          One important sprint, a couple optional. Then stop. That's a good day.
+          One important sprint, a couple of optional ones. Then stop. That's a good day.
         </Text>
       </View>
     ) : null;
@@ -119,7 +122,7 @@ export default function Home() {
     ) : null;
 
   const mainColumn = (
-    <View style={{ flex: 1 }}>
+    <View>
       {adjustment ? <Notice text={adjustment.message} onDismiss={() => dispatch({ type: "plan/dismissAdjustment", id: adjustment.id })} testID="adjustment-notice" /> : null}
       {coachMsg && coachMsg.kind !== "suggest" && coachMsg.kind !== "first_time" ? <Notice text={coachMsg.text} icon={coachMsg.kind === "break" ? "pause-circle" : "sparkle"} testID="coach-line" /> : null}
 
@@ -171,7 +174,7 @@ export default function Home() {
   );
 
   const sideColumn = (
-    <View style={{ flex: 1 }}>
+    <View>
       <SectionHeader title="Your missions" action={missions.length > 0 ? "See all" : undefined} onAction={() => router.navigate("/missions")} />
       {missions.length > 0 ? (
         <MissionRings missions={missions} state={state} onAdd={() => router.push("/new")} />

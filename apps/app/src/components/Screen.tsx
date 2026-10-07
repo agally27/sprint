@@ -44,5 +44,5 @@ export function Screen({ children, scroll = true, maxWidth = 680, style, content
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { flexGrow: 1, alignItems: "center" },
-  inner: { width: "100%", flex: 1, alignSelf: "center" },
+  inner: { width: "100%", flexGrow: 1, alignSelf: "center" },
 });
