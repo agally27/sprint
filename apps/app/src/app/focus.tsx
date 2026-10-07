@@ -5,6 +5,7 @@ import { useKeepAwake } from "expo-keep-awake";
 import Animated, { Easing, FadeIn, FadeOut, useAnimatedStyle, useSharedValue, withSequence, withTiming } from "react-native-reanimated";
 import { activeSession, formatClock, missionProgress, sessionTimer, timer } from "@sprint/core";
 import { Screen } from "@/components/Screen";
+import { Title } from "@/components/Title";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { Pressable } from "@/components/Pressable";
@@ -116,6 +117,7 @@ export default function Focus() {
 
   return (
     <Screen scroll={false} maxWidth={720} testID="focus" contentStyle={{ paddingTop: space.lg }}>
+      <Title>Focus</Title>
       <View style={styles.top}>
         <Pressable onPress={() => setConfirmStop(true)} style={styles.iconBtn} accessibilityRole="button" accessibilityLabel="Stop this sprint" testID="focus-close">
           <Icon name="close" size={22} color={colors.textMuted} />

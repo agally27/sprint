@@ -21,6 +21,7 @@ import { Dial } from "./Dial";
 import { VoiceButton } from "./VoiceButton";
 import { CalendarPicker } from "./CalendarPicker";
 import { Wordmark } from "./Wordmark";
+import { Title } from "./Title";
 import { useVoice } from "@/hooks/useVoice";
 import { useTheme } from "@/theme/ThemeProvider";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
@@ -121,6 +122,7 @@ export function GoalFlow({ firstRun }: { firstRun: boolean }) {
 
   return (
     <Screen maxWidth={640} testID="goal-flow">
+      <Title>{firstRun ? "Sprint" : "New goal"}</Title>
       <View style={styles.top}>
         {firstRun ? <Wordmark size={16} /> : <View />}
         {!firstRun ? (
@@ -168,8 +170,8 @@ export function GoalFlow({ firstRun }: { firstRun: boolean }) {
           ) : null}
           {parsed?.deadlinePhrase ? (
             <Animated.View entering={FadeInDown.duration(220)} style={[styles.hint, { backgroundColor: colors.accentSoft }]}>
-              <Icon name="calendar" size={16} color={colors.accent} />
-              <Text variant="small" style={{ marginLeft: 8, color: colors.accent }}>
+              <Icon name="calendar" size={16} color={colors.accentStrong} />
+              <Text variant="small" style={{ marginLeft: 8, color: colors.accentStrong }}>
                 By {parsed.deadlinePhrase} · {formatDeadline(parsed.deadline!, Date.now())}
               </Text>
             </Animated.View>

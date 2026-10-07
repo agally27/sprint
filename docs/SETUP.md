@@ -40,7 +40,7 @@ Client code only ever reads `EXPO_PUBLIC_*`. Keys never ship in the bundle.
 ```bash
 pnpm test                         # core (vitest) + server (vitest)
 pnpm typecheck
-pnpm build:web && pnpm test:e2e   # Playwright journeys against apps/app/dist
+pnpm build:web && pnpm test:e2e   # Playwright journeys + axe accessibility scan against apps/app/dist
 SHOTS=1 pnpm --filter @sprint/app exec playwright test e2e/visual.spec.ts   # screenshots to test-results/shots
 ```
 

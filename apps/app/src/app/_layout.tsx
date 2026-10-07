@@ -8,6 +8,7 @@ import { useFonts, Manrope_200ExtraLight, Manrope_300Light, Manrope_400Regular, 
 import { InstrumentSerif_400Regular, InstrumentSerif_400Regular_Italic } from "@expo-google-fonts/instrument-serif";
 import { ThemeProvider, useTheme } from "@/theme/ThemeProvider";
 import { Fallback } from "@/components/Fallback";
+import { Title } from "@/components/Title";
 import { useStore } from "@/store/store";
 import { useAppEffects } from "@/store/effects";
 
@@ -35,6 +36,7 @@ function Shell() {
   }, [colors.bg, isDark]);
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
+      <Title>Sprint</Title>
       <StatusBar style={isDark ? "light" : "dark"} />
       <Stack
         screenOptions={{

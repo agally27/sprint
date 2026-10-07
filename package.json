@@ -14,10 +14,11 @@
     "build:web": "pnpm --filter @sprint/app build:web",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
-    "test:e2e": "pnpm --filter @sprint/app exec playwright test e2e/journeys.spec.ts",
+    "test:e2e": "pnpm --filter @sprint/app exec playwright test e2e/journeys.spec.ts e2e/a11y.spec.ts",
     "shots": "SHOTS=1 pnpm --filter @sprint/app exec playwright test e2e/visual.spec.ts"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "1.63.0",
     "serve": "^14.2.6"
   }

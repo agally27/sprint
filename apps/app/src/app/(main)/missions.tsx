@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import { formatDeadline, formatMinutes, missionHealth, missionProgress, nextSprintFor, visibleMissions, type Mission } from "@sprint/core";
 import { Screen } from "@/components/Screen";
+import { Title } from "@/components/Title";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { Pressable } from "@/components/Pressable";
@@ -68,6 +69,7 @@ export default function Missions() {
 
   return (
     <Screen maxWidth={isDesktop ? 820 : 680} testID="missions">
+      <Title>Missions</Title>
       <View style={styles.header}>
         <View style={{ flex: 1 }}>
           <Text variant="label" tone="muted">

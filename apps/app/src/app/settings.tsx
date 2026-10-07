@@ -3,6 +3,7 @@ import { Platform, Share, StyleSheet, Switch, TextInput, View } from "react-nati
 import { useRouter } from "expo-router";
 import { createDemoState, serialize, type Preferences, type ThemePref } from "@sprint/core";
 import { Screen } from "@/components/Screen";
+import { Title } from "@/components/Title";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { Pressable } from "@/components/Pressable";
@@ -77,6 +78,7 @@ export default function Settings() {
 
   return (
     <Screen maxWidth={640} testID="settings">
+      <Title>Settings</Title>
       <View style={styles.top}>
         <Pressable onPress={() => (router.canGoBack() ? router.back() : router.replace("/home"))} style={styles.back} accessibilityRole="button" accessibilityLabel="Back" testID="settings-back">
           <Icon name="arrow-left" size={22} />

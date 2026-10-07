@@ -16,6 +16,7 @@ import {
   type Sprint,
 } from "@sprint/core";
 import { Screen } from "@/components/Screen";
+import { Title } from "@/components/Title";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { Pressable } from "@/components/Pressable";
@@ -146,6 +147,7 @@ export default function MissionScreen() {
 
   return (
     <Screen maxWidth={isDesktop ? 820 : 680} testID="mission" padded>
+      <Title>{mission.title}</Title>
       <View style={styles.topRow}>
         <Pressable onPress={() => (router.canGoBack() ? router.back() : router.replace("/missions"))} style={styles.back} accessibilityRole="button" accessibilityLabel="Back" testID="mission-back">
           <Icon name="arrow-left" size={22} />

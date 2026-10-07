@@ -4,6 +4,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { SPRINT_DURATIONS } from "@sprint/core";
 import { Screen } from "@/components/Screen";
+import { Title } from "@/components/Title";
 import { Text } from "@/components/Text";
 import { Pressable } from "@/components/Pressable";
 import { Icon } from "@/components/Icon";
@@ -31,6 +32,7 @@ export default function Next() {
 
   return (
     <Screen maxWidth={640} testID="next">
+      <Title>What next?</Title>
       <View style={styles.top}>
         <Text variant="label" tone="muted">
           What next?

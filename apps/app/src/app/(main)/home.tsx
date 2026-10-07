@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { activeSession, formatClock, greeting, sessionTimer, sprintsCompletedOn, sprintsScheduledOn, timer, toDay, topCoachMessage, visibleMissions } from "@sprint/core";
 import { Screen } from "@/components/Screen";
+import { Title } from "@/components/Title";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { Pressable } from "@/components/Pressable";
@@ -195,6 +196,7 @@ export default function Home() {
 
   return (
     <Screen maxWidth={isDesktop ? 1120 : 680} testID="home">
+      <Title>Today</Title>
       {header}
       {isDesktop ? (
         <View style={{ flexDirection: "row", gap: space.xxl, marginTop: space.lg }}>

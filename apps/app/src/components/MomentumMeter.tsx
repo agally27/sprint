@@ -9,7 +9,7 @@ export function MomentumMeter({ score, compact, showLabel = true }: { score: num
   const { colors } = useTheme();
   const pct = Math.max(0, Math.min(100, score));
   return (
-    <View accessibilityLabel={`Momentum ${Math.round(pct)}, ${BAND_LABELS[band(pct)]}`}>
+    <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: 100, now: Math.round(pct) }} accessibilityLabel={`Momentum ${Math.round(pct)}, ${BAND_LABELS[band(pct)]}`}>
       <View style={styles.row}>
         <Text variant="label" tone="muted">
           {showLabel ? "Momentum" : "Right now"}

@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import { ACHIEVEMENT_COPY, BAND_LABELS, band, formatMinutes, levelFor, stats, weeklyReview, type AchievementKey } from "@sprint/core";
 import { Screen } from "@/components/Screen";
+import { Title } from "@/components/Title";
 import { Text } from "@/components/Text";
 import { Pressable } from "@/components/Pressable";
 import { Icon } from "@/components/Icon";
@@ -31,6 +32,7 @@ export default function Progress() {
 
   return (
     <Screen maxWidth={isDesktop ? 920 : 680} testID="progress">
+      <Title>Progress</Title>
       <Text variant="label" tone="muted">
         Progress
       </Text>
@@ -80,7 +82,7 @@ export default function Progress() {
       </View>
 
       <SectionHeader title="Last four weeks" />
-      <View style={[styles.chart, { backgroundColor: colors.surface, borderColor: colors.line }]} accessibilityLabel={`Focused minutes over the last 28 days, ${st.focusedMinutes} in total`}>
+      <View style={[styles.chart, { backgroundColor: colors.surface, borderColor: colors.line }]} accessibilityRole="image" accessibilityLabel={`Focused minutes over the last 28 days, ${st.focusedMinutes} in total`}>
         {empty ? (
           <Text tone="faint" variant="small" align="center" style={{ paddingVertical: space.xl }}>
             Your progress will appear here.

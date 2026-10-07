@@ -45,4 +45,4 @@ Fades of 220–400 ms, springs on press (0.97 scale), a 3-2-1-Go countdown with 
 
 ## Accessibility
 
-Roles on everything (button, tab, timer, header), labels on icon-only controls, `accessibilityState` for selected/disabled/expanded, 44 pt minimum targets, keyboard reachability on web (the start button is reachable by Tab), contrast ≥ 4.5:1 for text on both themes, no information carried by colour alone.
+Roles on everything (button, tab, timer, header), labels on icon-only controls, `accessibilityState` for selected/disabled/expanded, 44 pt minimum targets, keyboard reachability on web (the start button is reachable by Tab), contrast ≥ 4.5:1 for text on both themes (checked by an axe scan in CI; `accentStrong`, `successText` and `textFaint` exist for exactly this), no information carried by colour alone.

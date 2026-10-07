@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import { formatMinutes, weeklyReview } from "@sprint/core";
 import { Screen } from "@/components/Screen";
+import { Title } from "@/components/Title";
 import { Text } from "@/components/Text";
 import { Pressable } from "@/components/Pressable";
 import { Icon } from "@/components/Icon";
@@ -24,6 +25,7 @@ export default function Review() {
 
   return (
     <Screen maxWidth={640} testID="review">
+      <Title>Weekly review</Title>
       <View style={styles.top}>
         <Text variant="label" tone="muted">
           Weekly review

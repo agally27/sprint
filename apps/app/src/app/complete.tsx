@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import Animated, { FadeIn, FadeInDown, FadeInUp } from "react-native-reanimated";
 import { ACHIEVEMENT_COPY, formatMinutes, missionProgress } from "@sprint/core";
 import { Screen } from "@/components/Screen";
+import { Title } from "@/components/Title";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { Pressable } from "@/components/Pressable";
@@ -94,6 +95,7 @@ export default function Complete() {
 
   return (
     <Screen maxWidth={640} testID="complete">
+      <Title>Sprint complete</Title>
       <View style={{ alignItems: "center", paddingTop: isDesktop ? space.xl : space.sm }}>
         <Animated.View entering={FadeIn.duration(500)}>
           <Dial size={dialSize} progress={1} status="complete" transitionMs={900}>
@@ -232,9 +234,10 @@ export default function Complete() {
 }
 
 function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  const { colors } = useTheme();
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
-      <Text style={{ fontFamily: fonts.sansLight, fontSize: 30, lineHeight: 36, letterSpacing: -1 }} tone={accent ? "accent" : "default"}>
+      <Text style={[{ fontFamily: fonts.sansLight, fontSize: 30, lineHeight: 36, letterSpacing: -1 }, accent ? { color: colors.accent } : null]}>
         {value}
       </Text>
       <Text variant="label" tone="faint" style={{ marginTop: 4 }}>

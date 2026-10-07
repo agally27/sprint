@@ -9,6 +9,7 @@ export default function Root({ children }: PropsWithChildren) {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
+        <title>Sprint</title>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
         <meta name="description" content="Sprint turns any goal into focused sprints that move you forward." />

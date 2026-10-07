@@ -21,9 +21,9 @@ export function Text({ variant = "body", tone = "default", align, style, ...rest
       : tone === "faint"
         ? colors.textFaint
         : tone === "accent"
-          ? colors.accent
+          ? colors.accentStrong
           : tone === "success"
-            ? colors.success
+            ? colors.successText
             : tone === "inverse"
               ? colors.bg
               : tone === "danger"

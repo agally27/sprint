@@ -23,7 +23,7 @@ jobs:
       - run: pnpm test
       - run: pnpm --filter @sprint/app build:web
       - run: pnpm --filter @sprint/app exec playwright install --with-deps chromium
-      - run: pnpm --filter @sprint/app exec playwright test e2e/journeys.spec.ts
+      - run: pnpm --filter @sprint/app exec playwright test e2e/journeys.spec.ts e2e/a11y.spec.ts
         env:
           PLAYWRIGHT_CHROMIUM_PATH: ""
       - uses: actions/upload-artifact@v4

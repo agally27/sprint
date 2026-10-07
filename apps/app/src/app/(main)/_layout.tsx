@@ -22,7 +22,7 @@ function BottomBar() {
   const pathname = usePathname();
   const router = useRouter();
   return (
-    <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 10), backgroundColor: colors.bgElevated, borderTopColor: colors.line }]} accessibilityRole="tablist">
+    <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 10), backgroundColor: colors.bgElevated, borderTopColor: colors.line }]} role="tablist" accessibilityRole="tablist" accessibilityLabel="Main">
       {TABS.map((t) => {
         const active = pathname.startsWith(t.href);
         return (
@@ -48,6 +48,7 @@ function SideRail() {
       <View style={{ paddingHorizontal: space.lg, marginBottom: space.xxl }}>
         <Wordmark size={18} />
       </View>
+      <View role="tablist" accessibilityRole="tablist" accessibilityLabel="Main">
       {TABS.map((t) => {
         const active = pathname.startsWith(t.href);
         return (
@@ -59,6 +60,7 @@ function SideRail() {
           </Pressable>
         );
       })}
+      </View>
       <View style={{ flex: 1 }} />
       <Pressable onPress={() => router.push("/settings")} style={styles.railItem} scaleTo={0.98} accessibilityRole="button" accessibilityLabel="Settings">
         <Icon name="settings" size={20} color={colors.textMuted} />

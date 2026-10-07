@@ -34,9 +34,13 @@ export interface ThemeColors {
   line: string;
   lineStrong: string;
   accent: string;
+  /** Accent for small text, meets 4.5:1 on bg, surface and accentSoft. */
+  accentStrong: string;
   accentText: string;
   accentSoft: string;
   success: string;
+  /** Success colour for small text, meets 4.5:1 on bg and surface. */
+  successText: string;
   successSoft: string;
   info: string;
   warning: string;
@@ -54,13 +58,15 @@ export const dark: ThemeColors = {
   surfaceStrong: "#1D2129",
   text: "#F4F3EF",
   textMuted: "#A3A6B1",
-  textFaint: "#6B6F7B",
+  textFaint: "#80848F",
   line: "rgba(255,255,255,0.08)",
   lineStrong: "rgba(255,255,255,0.14)",
   accent: palette.ember,
+  accentStrong: palette.ember,
   accentText: "#120804",
   accentSoft: "rgba(255,107,61,0.14)",
   success: palette.mint,
+  successText: palette.mint,
   successSoft: "rgba(61,220,151,0.14)",
   info: palette.sky,
   warning: palette.gold,
@@ -78,20 +84,22 @@ export const light: ThemeColors = {
   surfaceStrong: "#EFEDE7",
   text: "#15161A",
   textMuted: "#62656F",
-  textFaint: "#9A9DA6",
+  textFaint: "#6B6E78",
   line: "rgba(20,22,26,0.08)",
   lineStrong: "rgba(20,22,26,0.14)",
   accent: palette.emberDeep,
-  accentText: "#FFFFFF",
+  accentStrong: "#A23613",
+  accentText: "#1A0B06",
   accentSoft: "rgba(240,90,40,0.12)",
   success: palette.mintDeep,
+  successText: "#0E7A4F",
   successSoft: "rgba(31,169,113,0.12)",
   info: palette.skyDeep,
   warning: "#C9961D",
   ringTrack: "rgba(20,22,26,0.07)",
   ringGlow: "rgba(240,90,40,0.22)",
   overlay: "rgba(20,22,26,0.5)",
-  danger: "#D64545",
+  danger: "#C23A3A",
 };
 
 export const categoryColor: Record<string, string> = {
