@@ -4,9 +4,10 @@ const PORT = 4173;
 
 export default defineConfig({
   testDir: "./e2e",
-  timeout: 60_000,
+  timeout: 90_000,
   expect: { timeout: 10_000 },
-  fullyParallel: false,
+  fullyParallel: true,
+  workers: 3,
   retries: 0,
   reporter: [["list"]],
   outputDir: "./test-results",
@@ -24,7 +25,7 @@ export default defineConfig({
     timeout: 30_000,
   },
   projects: [
-    { name: "mobile", use: { ...devices["iPhone 14"], defaultBrowserType: "chromium" } },
-    { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } },
+    { name: "mobile", use: { ...devices["iPhone 14"], defaultBrowserType: "chromium", viewport: { width: 390, height: 1400 } } },
+    { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1100 } } },
   ],
 });

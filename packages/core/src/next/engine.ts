@@ -49,7 +49,8 @@ function reasonText(r: Record<string, number>, sprint: Sprint, mission: Mission,
   const top = Object.entries(r)
     .filter(([k]) => k !== "base")
     .sort((a, b) => b[1] - a[1])[0];
-  const key = top?.[0];
+  // Continuing the mission you were just working on reads better than restating its priority.
+  const key = opts.preferMissionId === mission.id && (r.flow ?? 0) > 0 ? "flow" : top?.[0];
   if (opts.availableMin !== undefined && sprint.durationMin > opts.availableMin) {
     return `It's the most useful thing you can do with ${opts.availableMin} minutes. We'll stop early and keep the rest for later.`;
   }

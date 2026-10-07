@@ -40,5 +40,6 @@ export function createDemoState(now: number): AppState {
 
   s = reduce(s, { type: "completion/clear" });
   s = reduce(s, { type: "app/foreground", now });
-  return { ...s, onboarded: true };
+  // A first impression should be calm: no catch-up notice from the backdated plan.
+  return { ...s, onboarded: true, pendingAdjustments: [] };
 }
