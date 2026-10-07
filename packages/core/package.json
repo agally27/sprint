@@ -1,0 +1,21 @@
+{
+  "name": "@sprint/core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sprint domain model, planning engines, timer, momentum and provider abstractions. Pure TypeScript, no platform dependencies.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.3"
+  }
+}

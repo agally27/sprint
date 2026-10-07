@@ -1,0 +1,94 @@
+{
+  "expo": {
+    "name": "Sprint",
+    "slug": "sprint",
+    "version": "0.1.0",
+    "scheme": "sprint",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "description": "Turn goals into momentum. Sprint turns any goal into focused sprints that move you forward.",
+    "primaryColor": "#FF6B3D",
+    "backgroundColor": "#0B0C10",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B0C10"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.sprint.mobile",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"],
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "config": { "usesNonExemptEncryption": false }
+    },
+    "android": {
+      "package": "app.sprint.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#0B0C10",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["RECORD_AUDIO", "VIBRATE", "POST_NOTIFICATIONS", "SCHEDULE_EXACT_ALARM"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "static",
+      "name": "Sprint",
+      "shortName": "Sprint",
+      "description": "Turn goals into momentum.",
+      "themeColor": "#0B0C10",
+      "backgroundColor": "#0B0C10"
+    },
+    "experiments": {
+      "typedRoutes": true
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Sprint uses the microphone so you can speak your goals and commands.",
+          "speechRecognitionPermission": "Sprint uses speech recognition to understand what you say."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#FF6B3D",
+          "defaultChannel": "sprints"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": []
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Sprint uses the microphone so you can speak your goals and commands."
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160,
+          "resizeMode": "contain",
+          "backgroundColor": "#0B0C10",
+          "dark": { "backgroundColor": "#0B0C10" }
+        }
+      ],
+      "expo-secure-store",
+      "expo-localization"
+    ]
+  }
+}
