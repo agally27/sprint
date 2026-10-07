@@ -42,6 +42,7 @@ export default function Complete() {
   }, [dispatch]);
   const celebrated = useRef(false);
   const leaving = useRef(false);
+  const hadSummary = useRef(!!summary);
 
   const next = useNext({ exclude: summary ? [summary.sprintId] : [], preferMissionId: summary?.missionId });
   const progress = useMemo(() => (mission ? missionProgress(state, mission.id) : undefined), [state, mission]);
@@ -55,8 +56,10 @@ export default function Complete() {
     if (summary.achievements.length > 0) setTimeout(() => haptics.trigger("reward_unlocked"), 900);
   }, [summary]);
 
+  // Opened without anything to show (e.g. a stale deep link): go home. If the
+  // summary disappears later it's because the next sprint started on top of us.
   useEffect(() => {
-    if (!summary && !leaving.current) router.dismissTo("/home");
+    if (!summary && !leaving.current && !hadSummary.current) router.dismissTo("/home");
   }, [summary, router]);
 
   const leave = useCallback(

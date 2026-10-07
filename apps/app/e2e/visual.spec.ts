@@ -2,6 +2,9 @@ import { test, expect, type Page } from "@playwright/test";
 
 const OUT = process.env.SHOTS_DIR ?? "test-results/shots";
 
+// Visual walkthrough: run with SHOTS=1 to capture screenshots for review.
+test.skip(!process.env.SHOTS, "set SHOTS=1 to capture screenshots");
+
 async function shot(page: Page, name: string) {
   await page.waitForTimeout(500);
   await page.screenshot({ path: `${OUT}/${name}.png`, fullPage: true });

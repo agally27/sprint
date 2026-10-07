@@ -20,6 +20,7 @@ class PlatformVoiceProvider implements VoiceProvider {
 
   async getPermission(): Promise<PermissionState> {
     if (!(await this.isAvailable())) return "unavailable";
+    if (Platform.OS === "web") return this.webPermission();
     try {
       const p = await ExpoSpeechRecognitionModule.getPermissionsAsync();
       if (p.granted) return "granted";
@@ -32,6 +33,11 @@ class PlatformVoiceProvider implements VoiceProvider {
 
   async requestPermission(): Promise<PermissionState> {
     if (!(await this.isAvailable())) return "unavailable";
+    // Browsers prompt when recognition starts; a denial arrives as a "not-allowed" error.
+    if (Platform.OS === "web") {
+      const current = await this.webPermission();
+      return current === "blocked" ? "blocked" : "granted";
+    }
     try {
       const p = await ExpoSpeechRecognitionModule.requestPermissionsAsync();
       if (p.granted) return "granted";
@@ -103,6 +109,20 @@ class PlatformVoiceProvider implements VoiceProvider {
       // Not running.
     }
     this.clear();
+  }
+
+  /** Chrome exposes microphone state through the Permissions API; others report undetermined. */
+  private async webPermission(): Promise<PermissionState> {
+    try {
+      const nav = globalThis.navigator as Navigator & { permissions?: { query(d: { name: string }): Promise<{ state: string }> } };
+      const status = await nav.permissions?.query({ name: "microphone" });
+      if (!status) return "undetermined";
+      if (status.state === "granted") return "granted";
+      if (status.state === "denied") return "blocked";
+      return "undetermined";
+    } catch {
+      return "undetermined";
+    }
   }
 
   private clear() {

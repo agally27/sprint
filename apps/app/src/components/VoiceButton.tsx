@@ -19,7 +19,7 @@ export function VoiceButton({ voice, size = 56 }: { voice: VoiceSession; size?: 
   }, [voice.listening, reduced, pulse]);
   const halo = useAnimatedStyle(() => ({ transform: [{ scale: pulse.value }], opacity: voice.listening ? 0.35 : 0 }));
 
-  const unavailable = voice.permission === "unavailable" || !voice.enabled;
+  const unavailable = voice.permission === "unavailable" || voice.permission === "blocked" || !voice.enabled;
   const label = voice.listening ? "Stop listening" : voice.permission === "blocked" ? "Microphone blocked. Open settings to allow it." : "Speak your goal";
   return (
     <View style={{ width: size, height: size, alignItems: "center", justifyContent: "center" }}>

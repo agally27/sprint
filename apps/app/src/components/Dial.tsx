@@ -140,7 +140,7 @@ export function Dial({ size = 300, progress, primary, label, sublabel, status = 
               </Text>
             ) : null}
             {primary ? (
-              <Text variant="numeral" tone={muted ? "muted" : "default"} align="center" style={{ fontSize: size * 0.22, lineHeight: size * 0.26, marginTop: size * 0.01 }} testID="dial-time">
+              <Text variant="numeral" tone={muted ? "muted" : "default"} align="center" style={{ fontSize: size * 0.22, lineHeight: size * 0.26, marginTop: size * 0.01 }} testID={testID ? `${testID}-time` : undefined}>
                 {primary}
               </Text>
             ) : null}

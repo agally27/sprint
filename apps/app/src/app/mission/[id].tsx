@@ -234,7 +234,7 @@ export default function MissionScreen() {
               ? sprints.map((s) => {
                   const isNext = next?.id === s.id;
                   return (
-                    <Pressable key={s.id} onPress={() => openSprint(s)} style={[styles.sprint, isNext ? { backgroundColor: colors.accentSoft, borderRadius: radius.md } : null]} scaleTo={0.995} accessibilityRole="button" accessibilityLabel={`${s.title}, ${s.durationMin} minutes, ${s.status}`} testID={`sprint-${s.id}`}>
+                    <Pressable key={s.id} onPress={() => openSprint(s)} style={[styles.sprint, isNext ? { backgroundColor: colors.accentSoft, borderRadius: radius.md } : null]} scaleTo={0.995} accessibilityRole="button" accessibilityLabel={`${s.title}, ${s.durationMin} minutes, ${s.status}`} testID={`sprint-row-${s.id}`}>
                       <View style={[styles.mark, { borderColor: s.status === "completed" ? colors.success : isNext ? colors.accent : colors.lineStrong, backgroundColor: s.status === "completed" ? colors.success : "transparent" }]}>
                         {s.status === "completed" ? <Icon name="check" size={10} color={colors.bg} strokeWidth={3} /> : null}
                       </View>
