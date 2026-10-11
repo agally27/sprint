@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useKeepAwake } from "expo-keep-awake";
+import { useKeepAwakeSafe } from "@/hooks/useKeepAwakeSafe";
 import Animated, { Easing, FadeIn, FadeOut, useAnimatedStyle, useSharedValue, withSequence, withTiming } from "react-native-reanimated";
 import { activeSession, formatClock, missionProgress, sessionTimer, timer } from "@sprint/core";
 import { Screen } from "@/components/Screen";
@@ -58,7 +58,7 @@ function Countdown({ onDone }: { onDone: () => void }) {
 }
 
 export default function Focus() {
-  useKeepAwake();
+  useKeepAwakeSafe();
   const router = useRouter();
   const { colors } = useTheme();
   const { isDesktop, width } = useBreakpoint();
