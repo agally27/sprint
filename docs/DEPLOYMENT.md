@@ -2,18 +2,32 @@
 
 Sprint has three deployables. None has been deployed yet; everything below is prepared and tested locally.
 
-## Web → Vercel (or any static host)
+## Vercel: two projects from one repo
+
+Create **two** Vercel projects from this repository. For each, set the **Root Directory** as below and turn on **Include source files outside of the Root Directory** (both depend on the workspace root and its lockfile). Leave the Framework Preset as **Other**; each project's `vercel.json` supplies the commands.
+
+| Project | Root Directory | What it deploys |
+| --- | --- | --- |
+| Sprint web | `apps/app` | Static export of the Expo web app |
+| Sprint API | `apps/server` | One serverless function at `/api/*` |
+
+### Web (`apps/app`)
+
+`vercel.json` runs `pnpm --filter @sprint/app build:web` and serves `dist`. It enables clean URLs (so `/home` serves `home.html`) and rewrites `/mission/:id` to the exported dynamic page, so reloads and deep links work. Cache and security headers are set there too. Set `EXPO_PUBLIC_API_URL` to the API project's URL. The manifest and icons in `apps/app/public` make the site installable.
+
+### API (`apps/server`)
+
+Vercel is **not** asked to compile the TypeScript. `pnpm run build:vercel` runs `scripts/build-vercel.mjs`, which bundles `src/vercel.ts` with esbuild into a single plain JavaScript file and writes it in Vercel's [Build Output API](https://vercel.com/docs/build-output-api) layout (`.vercel/output`). That avoids two failure modes seen in practice: Vercel's stricter TypeScript pass (ESM with NodeNext resolution), and the `@sprint/core` workspace package being shipped as `.ts` source, which Node cannot load from `node_modules`. Add `ANTHROPIC_API_KEY`, `ELEVENLABS_API_KEY`, `SPRINT_API_TOKEN` and `CORS_ORIGINS` as environment variables.
+
+Check a deploy locally before pushing, using Vercel's own builder:
 
 ```bash
-cd apps/app && pnpm build:web     # → apps/app/dist (static, SPA fallback not needed: every route is pre-rendered)
+cd apps/server
+pnpm run build:vercel      # writes .vercel/output
+npx vercel build --yes     # needs a stub .vercel/project.json; no account required
 ```
 
-`apps/app/vercel.json` sets the build command and output directory for a Vercel project rooted at `apps/app`. Set `EXPO_PUBLIC_API_URL` in the project's environment to point at the API. The manifest and icons in `apps/app/public` make the site installable.
-
-## API → Vercel (serverless) or Node
-
-- **Vercel**: create a project rooted at `apps/server`. `api/index.ts` exports the Hono handlers; `vercel.json` rewrites `/api/*` to it. Add `ANTHROPIC_API_KEY`, `ELEVENLABS_API_KEY`, `SPRINT_API_TOKEN`, `CORS_ORIGINS` as environment variables.
-- **Node**: `pnpm --filter @sprint/server start` runs `src/node.ts` on `PORT` (default 8787). Any container works.
+Any other host can run the API directly: `pnpm --filter @sprint/server start` serves on `PORT` (default 8787) from `src/node.ts`.
 
 The in-memory rate limiter is per instance; put a platform rate limit in front for production.
 
