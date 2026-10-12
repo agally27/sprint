@@ -20,6 +20,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm test
+      - name: Bundle the API for Vercel and smoke-test it
+        run: pnpm --filter @sprint/server build:vercel && pnpm --filter @sprint/server smoke:vercel
       - run: pnpm --filter @sprint/app build:web
       - run: pnpm --filter @sprint/app exec playwright install --with-deps chromium
       - run: pnpm --filter @sprint/app exec playwright test e2e/journeys.spec.ts e2e/a11y.spec.ts

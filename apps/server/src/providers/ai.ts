@@ -1,4 +1,6 @@
-import Anthropic from "@anthropic-ai/sdk";
+// Named imports on purpose: the SDK's default export is typed differently under
+// ESM and CommonJS resolution, and Vercel's TypeScript sees the CommonJS shape.
+import { Anthropic, APIError } from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { horizonDays, parseGoal, planLocal, type PlanDraft } from "@sprint/core";
 import { ModelPlanSchema, type PlanRequestInput } from "../schemas";
@@ -101,7 +103,7 @@ export class AnthropicAIProvider implements ServerAIProvider {
       return draft;
     } catch (error) {
       // Rate limits, outages, bad keys: the product keeps working on the local planner.
-      if (error instanceof Anthropic.APIError) {
+      if (error instanceof APIError) {
         console.warn(`[ai] anthropic ${error.status ?? "error"}: ${error.name}`);
       } else {
         console.warn("[ai] anthropic request failed");
