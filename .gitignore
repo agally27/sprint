@@ -33,3 +33,6 @@ test-results/
 *.log
 *.tsbuildinfo
 .turbo/
+
+# Claude Code personal settings
+.claude/settings.local.json

@@ -7,23 +7,21 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "description": "Turn goals into momentum. Sprint turns any goal into focused sprints that move you forward.",
     "primaryColor": "#FF6B3D",
     "backgroundColor": "#0B0C10",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#0B0C10"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.sprint.mobile",
       "infoPlist": {
-        "UIBackgroundModes": ["audio"],
+        "UIBackgroundModes": [
+          "audio"
+        ],
         "ITSAppUsesNonExemptEncryption": false
       },
-      "config": { "usesNonExemptEncryption": false }
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "app.sprint.mobile",
@@ -34,7 +32,12 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "permissions": ["RECORD_AUDIO", "VIBRATE", "POST_NOTIFICATIONS", "SCHEDULE_EXACT_ALARM"]
+      "permissions": [
+        "RECORD_AUDIO",
+        "VIBRATE",
+        "POST_NOTIFICATIONS",
+        "SCHEDULE_EXACT_ALARM"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -84,7 +87,9 @@
           "imageWidth": 160,
           "resizeMode": "contain",
           "backgroundColor": "#0B0C10",
-          "dark": { "backgroundColor": "#0B0C10" }
+          "dark": {
+            "backgroundColor": "#0B0C10"
+          }
         }
       ],
       "expo-secure-store",

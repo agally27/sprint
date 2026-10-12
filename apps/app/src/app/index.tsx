@@ -1,9 +1,10 @@
-import { Text, View } from "react-native";
+import { Redirect } from "expo-router";
+import { useStore } from "@/store/store";
 
 export default function Index() {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#0B0C10" }}>
-      <Text style={{ color: "#fff", fontSize: 32 }}>Sprint</Text>
-    </View>
-  );
+  const onboarded = useStore((s) => s.state.onboarded);
+  const active = useStore((s) => s.state.activeSessionId);
+  if (!onboarded) return <Redirect href="/onboarding" />;
+  if (active) return <Redirect href="/focus" />;
+  return <Redirect href="/home" />;
 }
