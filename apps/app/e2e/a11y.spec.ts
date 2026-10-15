@@ -10,7 +10,10 @@ async function scan(page: import("@playwright/test").Page, name: string) {
   const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
   const serious = results.violations.filter((v) => (v.impact === "serious" || v.impact === "critical") && !IGNORE.has(v.id));
   if (serious.length) {
-    console.log(`A11Y ${name}:`, JSON.stringify(serious.map((v) => ({ id: v.id, nodes: v.nodes.slice(0, 4).map((n) => ({ html: n.html.replace(/class="[^"]*"/g, "").slice(0, 90), data: n.any[0]?.data })) }))));
+    console.log(
+      `A11Y ${name}:`,
+      JSON.stringify(serious.map((v) => ({ id: v.id, nodes: v.nodes.slice(0, 4).map((n) => ({ html: n.html.replace(/class="[^"]*"/g, "").slice(0, 90), data: n.any[0]?.data })) }))),
+    );
   }
   expect(serious, `${name} has serious accessibility violations`).toEqual([]);
 }

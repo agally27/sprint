@@ -15,11 +15,19 @@ export function Wordmark({ size = 18, showName = true, color }: { size?: number;
     <View style={styles.row} accessibilityRole="header" accessibilityLabel="Sprint">
       <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         <Circle cx={size / 2} cy={size / 2} r={r} stroke={tint} strokeOpacity={0.25} strokeWidth={2.2} fill="none" />
-        <Circle cx={size / 2} cy={size / 2} r={r} stroke={colors.accent} strokeWidth={2.2} fill="none" strokeDasharray={`${c * 0.78} ${c}`} strokeLinecap="round" transform={`rotate(-90 ${size / 2} ${size / 2})`} />
+        <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          stroke={colors.accent}
+          strokeWidth={2.2}
+          fill="none"
+          strokeDasharray={`${c * 0.78} ${c}`}
+          strokeLinecap="round"
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        />
       </Svg>
-      {showName ? (
-        <Text style={{ fontFamily: fonts.sansExtrabold, fontSize: size * 0.8, letterSpacing: size * 0.18, color: tint, marginLeft: size * 0.5 }}>SPRINT</Text>
-      ) : null}
+      {showName ? <Text style={{ fontFamily: fonts.sansExtrabold, fontSize: size * 0.8, letterSpacing: size * 0.18, color: tint, marginLeft: size * 0.5 }}>SPRINT</Text> : null}
     </View>
   );
 }

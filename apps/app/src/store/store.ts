@@ -1,12 +1,5 @@
 import { create } from "zustand";
-import {
-  createInitialState,
-  loadState,
-  reduce,
-  saveState,
-  type Action,
-  type AppState,
-} from "@sprint/core";
+import { createInitialState, loadState, reduce, saveState, type Action, type AppState } from "@sprint/core";
 import { storage } from "@/platform/storage";
 
 interface Store {

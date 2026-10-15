@@ -15,7 +15,9 @@ for (const scheme of ["light", "dark"] as const) {
     const tag = `${testInfo.project.name}-${scheme}`;
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
-    page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+    page.on("console", (m) => {
+      if (m.type() === "error") errors.push(m.text());
+    });
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto("/");
     await page.getByTestId("load-demo").click();

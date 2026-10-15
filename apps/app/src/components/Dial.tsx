@@ -1,16 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import Svg, { Circle, Defs, G, Line, LinearGradient, Stop } from "react-native-svg";
-import Animated, {
-  Easing,
-  cancelAnimation,
-  useAnimatedProps,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSequence,
-  withTiming,
-} from "react-native-reanimated";
+import Animated, { Easing, cancelAnimation, useAnimatedProps, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from "react-native-reanimated";
 import { Text } from "./Text";
 import { useTheme } from "@/theme/ThemeProvider";
 import { palette } from "@/theme/tokens";
@@ -140,7 +131,13 @@ export function Dial({ size = 300, progress, primary, label, sublabel, status = 
               </Text>
             ) : null}
             {primary ? (
-              <Text variant="numeral" tone={muted ? "muted" : "default"} align="center" style={{ fontSize: size * 0.22, lineHeight: size * 0.26, marginTop: size * 0.01 }} testID={testID ? `${testID}-time` : undefined}>
+              <Text
+                variant="numeral"
+                tone={muted ? "muted" : "default"}
+                align="center"
+                style={{ fontSize: size * 0.22, lineHeight: size * 0.26, marginTop: size * 0.01 }}
+                testID={testID ? `${testID}-time` : undefined}
+              >
                 {primary}
               </Text>
             ) : null}

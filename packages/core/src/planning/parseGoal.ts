@@ -21,20 +21,7 @@ const NUMBER_WORDS: Record<string, number> = {
   few: 3,
 };
 
-const MONTHS = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-];
+const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 const MONTH_ABBR = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "sept", "oct", "nov", "dec"];
 const WEEKDAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 const WEEKDAY_ABBR = ["sun", "mon", "tue", "tues", "wed", "weds", "thu", "thur", "thurs", "fri", "sat"];
@@ -309,9 +296,17 @@ const RULES: ArchetypeRule[] = [
   { archetype: "strength", category: "health", patterns: [/\b(strength|muscle|lift|lifting|weights|gym|bulk|push ?ups?|pull ?ups?)\b/] },
   { archetype: "fitness", category: "health", patterns: [/\b(fit|fitter|fitness|healthy|healthier|exercise|workout|lose weight|weight loss|in shape|shape|yoga|swim|swimming|cycle|cycling|bike)\b/] },
   { archetype: "language", category: "learning", patterns: [/\b(spanish|french|german|italian|japanese|chinese|mandarin|portuguese|korean|arabic|russian|dutch|hindi|greek|language)\b/] },
-  { archetype: "skill", category: "learning", patterns: [/\b(learn|learning|course|guitar|piano|coding|code|programming|python|javascript|photography|drawing|paint|painting|chess|cook|cooking|dance|sing|singing|knit|woodwork)\b/] },
+  {
+    archetype: "skill",
+    category: "learning",
+    patterns: [/\b(learn|learning|course|guitar|piano|coding|code|programming|python|javascript|photography|drawing|paint|painting|chess|cook|cooking|dance|sing|singing|knit|woodwork)\b/],
+  },
   { archetype: "finance", category: "finance", patterns: [/\b(finances?|budget|budgeting|money|savings?|save|debt|tax|taxes|invest|investing|pension|retirement|mortgage)\b/] },
-  { archetype: "home", category: "home", patterns: [/\b(organise|organize|organised|organized|declutter|tidy|clean|house|home|flat|apartment|garage|kitchen|bedroom|wardrobe|closet|garden|move house|moving|renovate|decorate|room)\b/] },
+  {
+    archetype: "home",
+    category: "home",
+    patterns: [/\b(organise|organize|organised|organized|declutter|tidy|clean|house|home|flat|apartment|garage|kitchen|bedroom|wardrobe|closet|garden|move house|moving|renovate|decorate|room)\b/],
+  },
   { archetype: "business", category: "work", patterns: [/\b(business|company|startup|start-up|side hustle|freelance|freelancing|shop|store|brand|etsy|agency|consultancy|clients?)\b/] },
   { archetype: "job", category: "work", patterns: [/\b(job|cv|resume|résumé|career|interview|promotion|linkedin|hired)\b/] },
   { archetype: "event", category: "personal", patterns: [/\b(wedding|party|birthday|event|trip|holiday|vacation|travel|christmas dinner|conference|festival)\b/] },
@@ -323,7 +318,11 @@ const LEADERS = [
 ];
 
 function cleanObjective(text: string): string {
-  let s = text.trim().replace(/\s+/g, " ").replace(/[.!?]+$/g, "").trim();
+  let s = text
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/[.!?]+$/g, "")
+    .trim();
   for (let i = 0; i < 2; i++) {
     for (const re of LEADERS) s = s.replace(re, "");
   }

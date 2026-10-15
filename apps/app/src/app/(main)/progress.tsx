@@ -82,7 +82,11 @@ export default function Progress() {
       </View>
 
       <SectionHeader title="Last four weeks" />
-      <View style={[styles.chart, { backgroundColor: colors.surface, borderColor: colors.line }]} accessibilityRole="image" accessibilityLabel={`Focused minutes over the last 28 days, ${st.focusedMinutes} in total`}>
+      <View
+        style={[styles.chart, { backgroundColor: colors.surface, borderColor: colors.line }]}
+        accessibilityRole="image"
+        accessibilityLabel={`Focused minutes over the last 28 days, ${st.focusedMinutes} in total`}
+      >
         {empty ? (
           <Text tone="faint" variant="small" align="center" style={{ paddingVertical: space.xl }}>
             Your progress will appear here.
@@ -91,7 +95,16 @@ export default function Progress() {
           <View style={styles.bars}>
             {st.last28Days.map((d) => (
               <View key={d.day} style={styles.barWrap}>
-                <View style={[styles.bar, { height: Math.max(3, (d.minutes / maxDay) * 72), backgroundColor: d.minutes > 0 ? colors.accent : colors.ringTrack, opacity: d.minutes > 0 ? 0.55 + 0.45 * (d.minutes / maxDay) : 1 }]} />
+                <View
+                  style={[
+                    styles.bar,
+                    {
+                      height: Math.max(3, (d.minutes / maxDay) * 72),
+                      backgroundColor: d.minutes > 0 ? colors.accent : colors.ringTrack,
+                      opacity: d.minutes > 0 ? 0.55 + 0.45 * (d.minutes / maxDay) : 1,
+                    },
+                  ]}
+                />
               </View>
             ))}
           </View>
@@ -140,7 +153,13 @@ export default function Progress() {
       ) : (
         <View style={styles.constellation}>
           {completedMissions.map((m) => (
-            <Pressable key={m.id} onPress={() => router.push({ pathname: "/mission/[id]", params: { id: m.id } })} style={{ alignItems: "center", width: 96 }} accessibilityRole="button" accessibilityLabel={`${m.title}, complete`}>
+            <Pressable
+              key={m.id}
+              onPress={() => router.push({ pathname: "/mission/[id]", params: { id: m.id } })}
+              style={{ alignItems: "center", width: 96 }}
+              accessibilityRole="button"
+              accessibilityLabel={`${m.title}, complete`}
+            >
               <Ring size={64} progress={1} complete stroke={5}>
                 <Icon name="check" size={20} color={colors.success} />
               </Ring>
@@ -157,7 +176,15 @@ export default function Progress() {
         {ALL_ACHIEVEMENTS.map((key) => {
           const has = unlocked.has(key);
           return (
-            <View key={key} style={[styles.ach, { backgroundColor: has ? colors.surface : "transparent", borderColor: has ? colors.line : colors.line, opacity: has ? 1 : 0.5 }, isDesktop ? { width: "31.5%" } : null]} accessibilityLabel={`${ACHIEVEMENT_COPY[key].title}${has ? ", unlocked" : ", locked"}`}>
+            <View
+              key={key}
+              style={[
+                styles.ach,
+                { backgroundColor: has ? colors.surface : "transparent", borderColor: has ? colors.line : colors.line, opacity: has ? 1 : 0.5 },
+                isDesktop ? { width: "31.5%" } : null,
+              ]}
+              accessibilityLabel={`${ACHIEVEMENT_COPY[key].title}${has ? ", unlocked" : ", locked"}`}
+            >
               <Icon name={has ? "sparkle" : "ring"} size={16} color={has ? colors.accent : colors.textFaint} />
               <Text variant="smallStrong" style={{ marginTop: 8 }}>
                 {ACHIEVEMENT_COPY[key].title}

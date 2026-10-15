@@ -23,9 +23,29 @@ export type VoiceIntent =
   | { type: "unknown"; text: string };
 
 const NUM: Record<string, number> = {
-  one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
-  fifteen: 15, twenty: 20, "twenty five": 25, "twenty-five": 25, thirty: 30, forty: 40,
-  "forty five": 45, "forty-five": 45, fifty: 50, sixty: 60, ninety: 90, half: 30, quarter: 15,
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
+  seven: 7,
+  eight: 8,
+  nine: 9,
+  ten: 10,
+  fifteen: 15,
+  twenty: 20,
+  "twenty five": 25,
+  "twenty-five": 25,
+  thirty: 30,
+  forty: 40,
+  "forty five": 45,
+  "forty-five": 45,
+  fifty: 50,
+  sixty: 60,
+  ninety: 90,
+  half: 30,
+  quarter: 15,
 };
 
 function minutesIn(text: string): number | undefined {
@@ -47,7 +67,11 @@ function minutesIn(text: string): number | undefined {
 }
 
 export function parseVoiceCommand(transcript: string): VoiceIntent {
-  const t = transcript.toLowerCase().replace(/[.,!?]/g, " ").replace(/\s+/g, " ").trim();
+  const t = transcript
+    .toLowerCase()
+    .replace(/[.,!?]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   if (!t) return { type: "unknown", text: transcript };
 
   if (/^(pause|hold on|wait|stop for a (sec|second|moment))\b/.test(t) || /\bpause\b/.test(t)) return { type: "pause" };
@@ -58,7 +82,7 @@ export function parseVoiceCommand(transcript: string): VoiceIntent {
   if (/\b(what'?s|what is|whats) (my )?(next|up next)\b/.test(t) || /\bwhat (should|do|can) i do( next| now)?\b/.test(t) || /\bwhat next\b/.test(t)) return { type: "whats_next" };
   if (/\b(how am i doing|how'?s it going|progress report|how is it going|how'?s my progress)\b/.test(t)) return { type: "how_am_i_doing" };
   if (/\b(biggest|top|main) priority\b/.test(t) || /\bwhat matters most\b/.test(t)) return { type: "priority" };
-  if (/\b(move|push|shift|postpone) (this|it|that)( one)? (to )?tomorrow\b/.test(t) || /\btomorrow\b/.test(t) && /\b(move|push|postpone|shift)\b/.test(t)) return { type: "move_to_tomorrow" };
+  if (/\b(move|push|shift|postpone) (this|it|that)( one)? (to )?tomorrow\b/.test(t) || (/\btomorrow\b/.test(t) && /\b(move|push|postpone|shift)\b/.test(t))) return { type: "move_to_tomorrow" };
 
   const minutes = minutesIn(t);
   if (minutes !== undefined) {

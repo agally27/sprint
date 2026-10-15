@@ -1,12 +1,4 @@
-import {
-  LocalAIProvider,
-  MockImageProvider,
-  NoCalendarProvider,
-  NoMusicProvider,
-  RemoteAIProvider,
-  type AIProvider,
-  type Providers,
-} from "@sprint/core";
+import { LocalAIProvider, MockImageProvider, NoCalendarProvider, NoMusicProvider, RemoteAIProvider, type AIProvider, type Providers } from "@sprint/core";
 import { config, hasRemoteAI } from "@/lib/config";
 import { audio } from "@/platform/audio";
 import { haptics } from "@/platform/haptics";

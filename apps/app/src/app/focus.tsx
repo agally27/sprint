@@ -125,7 +125,13 @@ export default function Focus() {
         <Text variant="label" tone="muted" numberOfLines={1} style={{ flex: 1, textAlign: "center" }}>
           {mission?.title}
         </Text>
-        <Pressable onPress={() => dispatch({ type: "sprint/extend", now: Date.now(), deltaMin: 5 })} style={[styles.iconBtn, { width: 64 }]} accessibilityRole="button" accessibilityLabel="Add five minutes" testID="focus-extend">
+        <Pressable
+          onPress={() => dispatch({ type: "sprint/extend", now: Date.now(), deltaMin: 5 })}
+          style={[styles.iconBtn, { width: 64 }]}
+          accessibilityRole="button"
+          accessibilityLabel="Add five minutes"
+          testID="focus-extend"
+        >
           <Text variant="smallStrong" tone="muted">
             +5
           </Text>
@@ -168,9 +174,25 @@ export default function Focus() {
 
       {!counting && reading ? (
         <View style={styles.controls}>
-          <Button label={paused ? "Resume" : "Pause"} variant="secondary" size="lg" onPress={toggle} icon={<Icon name={paused ? "play" : "pause"} size={16} />} testID="focus-toggle" style={{ minWidth: 140 }} />
+          <Button
+            label={paused ? "Resume" : "Pause"}
+            variant="secondary"
+            size="lg"
+            onPress={toggle}
+            icon={<Icon name={paused ? "play" : "pause"} size={16} />}
+            testID="focus-toggle"
+            style={{ minWidth: 140 }}
+          />
           <View style={{ width: 12 }} />
-          <Button label="Complete" variant={almost ? "success" : "primary"} size="lg" onPress={complete} icon={<Icon name="check" size={18} color={almost ? "#06281A" : colors.accentText} />} testID="focus-complete" style={{ minWidth: 160 }} />
+          <Button
+            label="Complete"
+            variant={almost ? "success" : "primary"}
+            size="lg"
+            onPress={complete}
+            icon={<Icon name="check" size={18} color={almost ? "#06281A" : colors.accentText} />}
+            testID="focus-complete"
+            style={{ minWidth: 160 }}
+          />
         </View>
       ) : null}
 

@@ -126,9 +126,7 @@ export function activeSprint(state: AppState): Sprint | undefined {
 
 export function missedSprints(state: AppState, now: Millis): Sprint[] {
   const today = toDay(now);
-  return Object.values(state.sprints).filter(
-    (s) => s.status === "planned" && s.scheduledFor !== undefined && s.scheduledFor < today && state.missions[s.missionId]?.status === "active",
-  );
+  return Object.values(state.sprints).filter((s) => s.status === "planned" && s.scheduledFor !== undefined && s.scheduledFor < today && state.missions[s.missionId]?.status === "active");
 }
 
 export function sprintsScheduledOn(state: AppState, day: Day): Sprint[] {

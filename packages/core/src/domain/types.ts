@@ -10,26 +10,9 @@ export type Millis = number;
 /** Local calendar day, e.g. "2026-10-07". */
 export type Day = string;
 
-export type MissionCategory =
-  | "work"
-  | "health"
-  | "personal"
-  | "learning"
-  | "creative"
-  | "finance"
-  | "home"
-  | "other";
+export type MissionCategory = "work" | "health" | "personal" | "learning" | "creative" | "finance" | "home" | "other";
 
-export const MISSION_CATEGORIES: MissionCategory[] = [
-  "work",
-  "health",
-  "personal",
-  "learning",
-  "creative",
-  "finance",
-  "home",
-  "other",
-];
+export const MISSION_CATEGORIES: MissionCategory[] = ["work", "health", "personal", "learning", "creative", "finance", "home", "other"];
 
 export type Timeframe = "today" | "week" | "month" | "custom" | "long_term";
 
@@ -185,13 +168,7 @@ export interface Preferences {
   notifications: NotificationPrefs;
 }
 
-export type PermissionState =
-  | "unknown"
-  | "undetermined"
-  | "granted"
-  | "denied"
-  | "blocked"
-  | "unavailable";
+export type PermissionState = "unknown" | "undetermined" | "granted" | "denied" | "blocked" | "unavailable";
 
 export interface Permissions {
   microphone: PermissionState;

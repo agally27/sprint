@@ -58,9 +58,7 @@ function scale(template: Template, horizon: number): Scaled {
     }
     compressed = true;
   }
-  const milestones = all
-    .filter((m) => m.sprints.length > 0)
-    .map((m) => ({ title: m.title, sprints: m.sprints.map(toDraftSprint) }));
+  const milestones = all.filter((m) => m.sprints.length > 0).map((m) => ({ title: m.title, sprints: m.sprints.map(toDraftSprint) }));
   return { milestones, compressed, totalMin: total(all) };
 }
 
@@ -79,13 +77,7 @@ function describeHorizon(days: number): string {
   return `${months} month${months === 1 ? "" : "s"} away`;
 }
 
-export function explain(opts: {
-  milestones: DraftMilestone[];
-  horizon: number;
-  hasDeadline: boolean;
-  compressed: boolean;
-  timeframe: Timeframe;
-}): string {
+export function explain(opts: { milestones: DraftMilestone[]; horizon: number; hasDeadline: boolean; compressed: boolean; timeframe: Timeframe }): string {
   const { milestones, horizon, hasDeadline, compressed, timeframe } = opts;
   const n = milestones.reduce((a, m) => a + m.sprints.length, 0);
   const total = milestones.reduce((a, m) => a + m.sprints.reduce((x, s) => x + s.durationMin, 0), 0);
@@ -119,11 +111,7 @@ export function planLocal(req: PlanRequest): PlanDraft {
   const parsed = parseGoal(req.goalText, req.now);
   const template = resolveTemplate(parsed.archetype, req.clarificationAnswer);
   const deadline = parsed.deadline ?? req.deadline;
-  const timeframe: Timeframe = parsed.deadline
-    ? (parsed.timeframeHint ?? "custom")
-    : req.deadline !== undefined
-      ? "custom"
-      : (req.timeframe ?? "month");
+  const timeframe: Timeframe = parsed.deadline ? (parsed.timeframeHint ?? "custom") : req.deadline !== undefined ? "custom" : (req.timeframe ?? "month");
   const horizon = horizonDays(timeframe, deadline, req.now);
   const { milestones, compressed } = scale(template, horizon);
 

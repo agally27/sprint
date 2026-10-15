@@ -22,11 +22,7 @@ export function Chip({ label, selected, onPress, size = "md", testID }: ChipProp
       accessibilityRole="button"
       accessibilityState={{ selected: !!selected }}
       testID={testID}
-      style={[
-        styles.chip,
-        size === "sm" ? styles.sm : null,
-        { backgroundColor: selected ? colors.text : colors.surfaceStrong, borderColor: selected ? colors.text : colors.line },
-      ]}
+      style={[styles.chip, size === "sm" ? styles.sm : null, { backgroundColor: selected ? colors.text : colors.surfaceStrong, borderColor: selected ? colors.text : colors.line }]}
     >
       <Text variant={size === "sm" ? "smallStrong" : "bodyStrong"} style={{ color: selected ? colors.bg : colors.text }}>
         {label}

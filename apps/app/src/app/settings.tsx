@@ -59,7 +59,15 @@ export default function Settings() {
   const requestNotifications = useCallback(async () => {
     const r = await providers.notifications.requestPermission();
     dispatch({ type: "permissions/set", key: "notifications", state: r });
-    setNotifStatus(r === "granted" ? "Notifications are on." : r === "blocked" ? "Blocked in system settings. Sprint works fine without them." : r === "unavailable" ? "Not available here." : "Not allowed. Sprint works fine without them.");
+    setNotifStatus(
+      r === "granted"
+        ? "Notifications are on."
+        : r === "blocked"
+          ? "Blocked in system settings. Sprint works fine without them."
+          : r === "unavailable"
+            ? "Not available here."
+            : "Not allowed. Sprint works fine without them.",
+    );
   }, [dispatch]);
 
   const exportData = useCallback(async () => {
@@ -141,9 +149,21 @@ export default function Settings() {
           <Row label="Sprint reminders" detail="When a sprint ends." value={prefs.notifications.sprintReminders} onChange={(v) => setNotif({ sprintReminders: v })} />
           <Row label="Goal reminders" detail="Deadlines and missions that have gone quiet." value={prefs.notifications.goalReminders} onChange={(v) => setNotif({ goalReminders: v })} />
           <Row label="Suggestions" detail="A morning nudge with one good sprint." value={prefs.notifications.aiSuggestions} onChange={(v) => setNotif({ aiSuggestions: v })} />
-          <Row label="Quiet hours" detail={`${prefs.notifications.quietHours.start} – ${prefs.notifications.quietHours.end}. Nothing but sprint endings.`} value={prefs.notifications.quietHours.enabled} onChange={(v) => setNotif({ quietHours: { ...prefs.notifications.quietHours, enabled: v } })} />
+          <Row
+            label="Quiet hours"
+            detail={`${prefs.notifications.quietHours.start} – ${prefs.notifications.quietHours.end}. Nothing but sprint endings.`}
+            value={prefs.notifications.quietHours.enabled}
+            onChange={(v) => setNotif({ quietHours: { ...prefs.notifications.quietHours, enabled: v } })}
+          />
           <View style={{ marginTop: space.lg, flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
-            <Button label={state.permissions.notifications === "granted" ? "Permission granted" : "Allow notifications"} size="sm" variant="secondary" onPress={requestNotifications} disabled={state.permissions.notifications === "granted"} testID="allow-notifications" />
+            <Button
+              label={state.permissions.notifications === "granted" ? "Permission granted" : "Allow notifications"}
+              size="sm"
+              variant="secondary"
+              onPress={requestNotifications}
+              disabled={state.permissions.notifications === "granted"}
+              testID="allow-notifications"
+            />
             {notifStatus ? (
               <Text variant="caption" tone="muted">
                 {notifStatus}
@@ -154,7 +174,17 @@ export default function Settings() {
       ) : null}
 
       <SectionHeader title="AI" />
-      <Row label="AI planning" detail={remoteAI ? "Plans come from Sprint AI. Your goal text is sent to the Sprint API to make the plan; nothing else is." : "No AI service configured. Plans are built on this device from Sprint's own playbooks."} value={prefs.ai} onChange={(v) => set({ ai: v })} testID="toggle-ai" />
+      <Row
+        label="AI planning"
+        detail={
+          remoteAI
+            ? "Plans come from Sprint AI. Your goal text is sent to the Sprint API to make the plan; nothing else is."
+            : "No AI service configured. Plans are built on this device from Sprint's own playbooks."
+        }
+        value={prefs.ai}
+        onChange={(v) => set({ ai: v })}
+        testID="toggle-ai"
+      />
       <Row label="Generated visuals" detail="Mission artwork, when a provider is configured. Off means palettes only." value={prefs.generatedVisuals} onChange={(v) => set({ generatedVisuals: v })} />
       <Text variant="caption" tone="faint" style={{ marginTop: space.md }}>
         Everything else, including goals, plans, sprints and history, stays on this device.

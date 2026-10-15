@@ -2,15 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Keyboard, Platform, StyleSheet, TextInput, View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Animated, { FadeIn, FadeInDown, FadeOut, Layout } from "react-native-reanimated";
-import {
-  SUGGESTED_GOALS,
-  createDemoState,
-  formatDeadline,
-  formatMinutes,
-  parseGoal,
-  type PlanDraft,
-  type Timeframe,
-} from "@sprint/core";
+import { SUGGESTED_GOALS, createDemoState, formatDeadline, formatMinutes, parseGoal, type PlanDraft, type Timeframe } from "@sprint/core";
 import { Screen } from "./Screen";
 import { Text } from "./Text";
 import { Button } from "./Button";
@@ -165,7 +157,13 @@ export function GoalFlow({ firstRun }: { firstRun: boolean }) {
           </View>
           {voice.permission === "blocked" || voice.permission === "unavailable" || voice.error ? (
             <Text variant="caption" tone="faint" style={{ marginTop: space.sm }}>
-              {voice.permission === "unavailable" ? "Voice isn't available here. Typing works just as well." : voice.permission === "blocked" ? "Microphone is blocked in your settings. Typing works just as well." : voice.error === "no-speech" ? "Didn't catch that. Try again, or type instead." : "Voice didn't work this time. Typing works just as well."}
+              {voice.permission === "unavailable"
+                ? "Voice isn't available here. Typing works just as well."
+                : voice.permission === "blocked"
+                  ? "Microphone is blocked in your settings. Typing works just as well."
+                  : voice.error === "no-speech"
+                    ? "Didn't catch that. Try again, or type instead."
+                    : "Voice didn't work this time. Typing works just as well."}
             </Text>
           ) : null}
           {parsed?.deadlinePhrase ? (
@@ -344,7 +342,14 @@ export function GoalFlow({ firstRun }: { firstRun: boolean }) {
               const mins = m.sprints.reduce((a, s) => a + s.durationMin, 0);
               return (
                 <Animated.View key={i} layout={Layout.duration(200)} style={[styles.milestone, { borderColor: colors.line }]}>
-                  <Pressable onPress={() => setExpanded(open ? undefined : i)} style={styles.milestoneHead} scaleTo={0.995} accessibilityRole="button" accessibilityState={{ expanded: open }} testID={`milestone-${i}`}>
+                  <Pressable
+                    onPress={() => setExpanded(open ? undefined : i)}
+                    style={styles.milestoneHead}
+                    scaleTo={0.995}
+                    accessibilityRole="button"
+                    accessibilityState={{ expanded: open }}
+                    testID={`milestone-${i}`}
+                  >
                     <View style={[styles.index, { borderColor: colors.lineStrong }]}>
                       <Text variant="caption" tone="muted">
                         {i + 1}

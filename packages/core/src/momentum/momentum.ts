@@ -36,12 +36,7 @@ export function gainFor(sprint: Pick<Sprint, "durationMin" | "energy">, focusedM
   return Math.round(base + byLength + byEnergy);
 }
 
-export function addCompletion(
-  state: MomentumState,
-  sprint: Pick<Sprint, "durationMin" | "energy">,
-  focusedMinutes: number,
-  now: Millis,
-): { next: MomentumState; gain: number } {
+export function addCompletion(state: MomentumState, sprint: Pick<Sprint, "durationMin" | "energy">, focusedMinutes: number, now: Millis): { next: MomentumState; gain: number } {
   const current = cooled(state, now);
   const rawGain = gainFor(sprint, focusedMinutes);
   // Diminishing returns near the top keep the number meaningful.
@@ -75,19 +70,7 @@ export const BAND_LABELS: Record<MomentumBand, string> = {
 /** Levels are earned from lifetime focused minutes. Thresholds are cumulative. */
 export const LEVEL_THRESHOLDS = [0, 60, 180, 420, 900, 1800, 3000, 4800, 7200, 10800, 15000];
 
-export const LEVEL_NAMES = [
-  "Starter",
-  "Mover",
-  "Builder",
-  "Finisher",
-  "Pacer",
-  "Driver",
-  "Sustainer",
-  "Pathfinder",
-  "Forerunner",
-  "Trailblazer",
-  "Vanguard",
-];
+export const LEVEL_NAMES = ["Starter", "Mover", "Builder", "Finisher", "Pacer", "Driver", "Sustainer", "Pathfinder", "Forerunner", "Trailblazer", "Vanguard"];
 
 export interface LevelInfo {
   level: number;
@@ -171,9 +154,7 @@ export function evaluateAchievements(ctx: AchievementContext): Achievement[] {
   if (todayCount >= 3) award("strong_day");
 
   const weekAgo = ctx.now - 7 * DAY;
-  const days = new Set(
-    ctx.completedSprints.filter((s) => s.completedAt !== undefined && s.completedAt >= weekAgo).map((s) => toDay(s.completedAt!)),
-  );
+  const days = new Set(ctx.completedSprints.filter((s) => s.completedAt !== undefined && s.completedAt >= weekAgo).map((s) => toDay(s.completedAt!)));
   if (days.size >= 5) award("consistent_week");
 
   // Comeback: previous completion was five or more days ago.

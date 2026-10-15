@@ -10,7 +10,19 @@ import { useTheme } from "@/theme/ThemeProvider";
 import { categoryColor, radius, space } from "@/theme/tokens";
 import { startSprint } from "@/lib/actions";
 
-export function NextSprintCard({ rec, onChange, minutesOverride, prominent = true, testID = "next-sprint" }: { rec: Recommendation; onChange?: () => void; minutesOverride?: number; prominent?: boolean; testID?: string }) {
+export function NextSprintCard({
+  rec,
+  onChange,
+  minutesOverride,
+  prominent = true,
+  testID = "next-sprint",
+}: {
+  rec: Recommendation;
+  onChange?: () => void;
+  minutesOverride?: number;
+  prominent?: boolean;
+  testID?: string;
+}) {
   const { colors } = useTheme();
   const minutes = minutesOverride ?? rec.suggestedMinutes ?? rec.sprint.durationMin;
   const partial = minutes < rec.sprint.durationMin;
@@ -43,7 +55,14 @@ export function NextSprintCard({ rec, onChange, minutesOverride, prominent = tru
         {rec.reason}
       </Text>
       <View style={styles.actions}>
-        <Button label="Start sprint" size={prominent ? "xl" : "lg"} onPress={() => startSprint(rec.sprint.id, partial ? minutes : undefined)} icon={<Icon name="play" size={16} color={colors.accentText} />} style={{ flex: 1 }} testID="start-sprint" />
+        <Button
+          label="Start sprint"
+          size={prominent ? "xl" : "lg"}
+          onPress={() => startSprint(rec.sprint.id, partial ? minutes : undefined)}
+          icon={<Icon name="play" size={16} color={colors.accentText} />}
+          style={{ flex: 1 }}
+          testID="start-sprint"
+        />
         {onChange ? (
           <Pressable onPress={onChange} style={[styles.change, { borderColor: colors.lineStrong }]} accessibilityRole="button" accessibilityLabel="Choose a different sprint" testID="change-sprint">
             <Icon name="more" size={20} />

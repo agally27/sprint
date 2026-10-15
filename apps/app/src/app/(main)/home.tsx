@@ -76,7 +76,9 @@ export default function Home() {
   const daily = (state.dailyMission?.day === today ? state.dailyMission.sprintIds : [])
     .map((id) => state.sprints[id])
     .filter((s): s is NonNullable<typeof s> => !!s && s.status === "planned" && s.id !== featuredId);
-  const upcoming = sprintsScheduledOn(state, today).filter((s) => !daily.some((d) => d.id === s.id) && s.id !== featuredId).slice(0, 4);
+  const upcoming = sprintsScheduledOn(state, today)
+    .filter((s) => !daily.some((d) => d.id === s.id) && s.id !== featuredId)
+    .slice(0, 4);
   const dailyBlock =
     daily.length > 0 && !session ? (
       <View>
@@ -85,7 +87,14 @@ export default function Home() {
           {daily.map((s, i) => {
             const m = state.missions[s.missionId];
             return (
-              <Pressable key={s.id} onPress={() => startSprint(s.id)} style={[styles.dailyRow, i > 0 ? { borderTopWidth: 1, borderTopColor: colors.line } : null]} scaleTo={0.995} accessibilityRole="button" accessibilityLabel={`Start ${s.title}`}>
+              <Pressable
+                key={s.id}
+                onPress={() => startSprint(s.id)}
+                style={[styles.dailyRow, i > 0 ? { borderTopWidth: 1, borderTopColor: colors.line } : null]}
+                scaleTo={0.995}
+                accessibilityRole="button"
+                accessibilityLabel={`Start ${s.title}`}
+              >
                 <Ring size={14} progress={1} color={m ? categoryColor[m.category] : colors.accent} stroke={3} />
                 <View style={{ flex: 1, marginLeft: 12 }}>
                   <Text variant="body" numberOfLines={1}>
@@ -125,12 +134,21 @@ export default function Home() {
   const mainColumn = (
     <View>
       {adjustment ? <Notice text={adjustment.message} onDismiss={() => dispatch({ type: "plan/dismissAdjustment", id: adjustment.id })} testID="adjustment-notice" /> : null}
-      {coachMsg && coachMsg.kind !== "suggest" && coachMsg.kind !== "first_time" ? <Notice text={coachMsg.text} icon={coachMsg.kind === "break" ? "pause-circle" : "sparkle"} testID="coach-line" /> : null}
+      {coachMsg && coachMsg.kind !== "suggest" && coachMsg.kind !== "first_time" ? (
+        <Notice text={coachMsg.text} icon={coachMsg.kind === "break" ? "pause-circle" : "sparkle"} testID="coach-line" />
+      ) : null}
 
       {session && reading && activeSprint ? (
         <Animated.View entering={FadeIn.duration(300)}>
           <SectionHeader title="Active sprint" />
-          <Pressable onPress={() => router.push("/focus")} style={[styles.activeCard, { backgroundColor: colors.surface, borderColor: colors.line }]} scaleTo={0.99} accessibilityRole="button" accessibilityLabel="Return to your sprint" testID="active-sprint-card">
+          <Pressable
+            onPress={() => router.push("/focus")}
+            style={[styles.activeCard, { backgroundColor: colors.surface, borderColor: colors.line }]}
+            scaleTo={0.99}
+            accessibilityRole="button"
+            accessibilityLabel="Return to your sprint"
+            testID="active-sprint-card"
+          >
             <Dial size={150} progress={reading.progress} primary={formatClock(reading.remainingMs)} status={reading.status === "paused" ? "paused" : "running"} transitionMs={1000} />
             <View style={{ flex: 1, marginLeft: space.lg }}>
               <Text variant="label" tone="muted">
@@ -164,10 +182,20 @@ export default function Home() {
             {missions.length === 0 ? "What's worth moving forward?" : next.empty === "all_done" ? "Everything planned is done." : "Ready for your next sprint?"}
           </Text>
           <Text tone="muted" align="center" style={{ marginTop: space.sm }}>
-            {missions.length === 0 ? "Start with one goal. Sprint turns it into something you can begin today." : next.empty === "all_done" ? "Add a sprint to a mission, or start a new goal." : "Resume a paused mission or add a new goal."}
+            {missions.length === 0
+              ? "Start with one goal. Sprint turns it into something you can begin today."
+              : next.empty === "all_done"
+                ? "Add a sprint to a mission, or start a new goal."
+                : "Resume a paused mission or add a new goal."}
           </Text>
           <View style={{ marginTop: space.xl }}>
-            <Button label={missions.length === 0 ? "Add your first goal" : "Add a goal"} size="lg" onPress={() => router.push("/new")} icon={<Icon name="plus" size={18} color={colors.accentText} />} testID="empty-add-goal" />
+            <Button
+              label={missions.length === 0 ? "Add your first goal" : "Add a goal"}
+              size="lg"
+              onPress={() => router.push("/new")}
+              icon={<Icon name="plus" size={18} color={colors.accentText} />}
+              testID="empty-add-goal"
+            />
           </View>
         </View>
       )}

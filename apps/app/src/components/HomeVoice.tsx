@@ -62,7 +62,11 @@ export function HomeVoice() {
           return;
         case "how_am_i_doing": {
           const today = sprintsCompletedOn(state, toDay(now)).length;
-          say(today === 0 ? `Momentum is at ${Math.round(state.momentum.score)}. One short sprint would get today moving.` : `${today} sprint${today === 1 ? "" : "s"} today. Momentum is at ${Math.round(state.momentum.score)}.`);
+          say(
+            today === 0
+              ? `Momentum is at ${Math.round(state.momentum.score)}. One short sprint would get today moving.`
+              : `${today} sprint${today === 1 ? "" : "s"} today. Momentum is at ${Math.round(state.momentum.score)}.`,
+          );
           return;
         }
         case "priority": {

@@ -62,7 +62,11 @@ export default function Next() {
             {result.empty === "no_missions" ? "Start with one goal." : result.empty === "all_done" ? "Everything planned is done." : "Nothing fits in that time."}
           </Text>
           <Text tone="muted" align="center" style={{ marginTop: space.sm }}>
-            {result.empty === "no_missions" ? "Sprint will turn it into something you can begin today." : result.empty === "all_done" ? "Add a sprint to a mission, or start a new goal." : "Try a few more minutes, or run part of a longer sprint."}
+            {result.empty === "no_missions"
+              ? "Sprint will turn it into something you can begin today."
+              : result.empty === "all_done"
+                ? "Add a sprint to a mission, or start a new goal."
+                : "Try a few more minutes, or run part of a longer sprint."}
           </Text>
           <View style={{ marginTop: space.lg }}>
             <Button label={result.empty === "nothing_fits" ? "Show any length" : "Add a goal"} onPress={() => (result.empty === "nothing_fits" ? setMinutes(undefined) : router.push("/new"))} />

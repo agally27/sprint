@@ -1,14 +1,6 @@
 import type { AppState, ID, Millis, Mission, Sprint } from "../domain/types";
 import { daysUntil, toDay } from "../domain/time";
-import {
-  activeMissions,
-  currentMilestone,
-  daysSince,
-  milestoneSprints,
-  missionProgress,
-  missionSprints,
-  sprintsCompletedOn,
-} from "../domain/selectors";
+import { activeMissions, currentMilestone, daysSince, milestoneSprints, missionProgress, missionSprints, sprintsCompletedOn } from "../domain/selectors";
 
 /**
  * "What should I do next?"
@@ -64,9 +56,7 @@ function reasonText(r: Record<string, number>, sprint: Sprint, mission: Mission,
     case "flow":
       return `You're in flow on ${mission.title}. Keep going.`;
     case "scheduled":
-      return firstOfMilestone && milestoneTitle
-        ? `It's planned for today and opens the ${milestoneTitle.toLowerCase()} stage.`
-        : `It's planned for today.`;
+      return firstOfMilestone && milestoneTitle ? `It's planned for today and opens the ${milestoneTitle.toLowerCase()} stage.` : `It's planned for today.`;
     case "fit":
       return `It fits the ${opts.availableMin} minutes you have.`;
     case "priority":
@@ -125,7 +115,8 @@ export function recommendNext(state: AppState, opts: NextOptions): NextResult {
 
       // First sprint of a milestone unlocks a stage.
       const inMilestone = milestoneSprints(state, sprint.milestoneId);
-      const firstOfMilestone = inMilestone.findIndex((s) => s.status !== "completed" && s.status !== "skipped") === inMilestone.indexOf(sprint) && inMilestone.every((s) => s.order >= sprint.order || s.status !== "planned");
+      const firstOfMilestone =
+        inMilestone.findIndex((s) => s.status !== "completed" && s.status !== "skipped") === inMilestone.indexOf(sprint) && inMilestone.every((s) => s.order >= sprint.order || s.status !== "planned");
       if (firstOfMilestone && milestone && milestone.id === sprint.milestoneId && inMilestone[0]?.id === sprint.id) r.milestone = 4;
 
       // Time fit.

@@ -66,7 +66,10 @@ export async function mockNotifications(page: Page, permission: "granted" | "den
         if (FakeNotification.permission === "default") FakeNotification.permission = "denied";
         return FakeNotification.permission;
       }
-      constructor(public title: string, public options?: unknown) {}
+      constructor(
+        public title: string,
+        public options?: unknown,
+      ) {}
     }
     (window as unknown as { Notification: unknown }).Notification = FakeNotification;
   }, permission);

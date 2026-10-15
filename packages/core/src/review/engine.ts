@@ -53,7 +53,19 @@ export function weeklyReview(state: AppState, now: Millis, weekStart: Day = week
   const activeDays = perDay.filter((n) => n > 0).length;
 
   const weekAchievements = state.achievements.filter((a) => a.unlockedAt >= start && a.unlockedAt < end);
-  const rank: Record<string, number> = { first_mission: 10, first_milestone: 7, consistent_week: 6, comeback: 6, ten_hours: 5, deep_focus: 4, strong_day: 4, momentum_strong: 3, twenty_five_sprints: 3, five_sprints: 2, first_sprint: 1 };
+  const rank: Record<string, number> = {
+    first_mission: 10,
+    first_milestone: 7,
+    consistent_week: 6,
+    comeback: 6,
+    ten_hours: 5,
+    deep_focus: 4,
+    strong_day: 4,
+    momentum_strong: 3,
+    twenty_five_sprints: 3,
+    five_sprints: 2,
+    first_sprint: 1,
+  };
   const biggest = [...weekAchievements].sort((a, b) => (rank[b.key] ?? 0) - (rank[a.key] ?? 0))[0];
 
   const topMission = missionsProgressed[0];

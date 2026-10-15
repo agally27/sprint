@@ -1,13 +1,4 @@
-export type HapticEvent =
-  | "sprint_start"
-  | "countdown_tick"
-  | "sprint_complete"
-  | "milestone_complete"
-  | "mission_complete"
-  | "reward_unlocked"
-  | "important_reminder"
-  | "selection"
-  | "warning";
+export type HapticEvent = "sprint_start" | "countdown_tick" | "sprint_complete" | "milestone_complete" | "mission_complete" | "reward_unlocked" | "important_reminder" | "selection" | "warning";
 
 export interface HapticsProvider {
   readonly name: string;

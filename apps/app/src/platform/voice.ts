@@ -66,15 +66,7 @@ class PlatformVoiceProvider implements VoiceProvider {
       ExpoSpeechRecognitionModule.addListener("error", (event) => {
         const code = String(event.error);
         const mapped =
-          code === "not-allowed" || code === "service-not-allowed"
-            ? "not-allowed"
-            : code === "no-speech"
-              ? "no-speech"
-              : code === "network"
-                ? "network"
-                : code === "aborted"
-                  ? "aborted"
-                  : "unknown";
+          code === "not-allowed" || code === "service-not-allowed" ? "not-allowed" : code === "no-speech" ? "no-speech" : code === "network" ? "network" : code === "aborted" ? "aborted" : "unknown";
         listeners.onError(mapped);
       }),
       ExpoSpeechRecognitionModule.addListener("end", () => {

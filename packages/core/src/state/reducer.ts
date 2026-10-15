@@ -1,18 +1,4 @@
-import type {
-  Achievement,
-  ActivityEvent,
-  ActivityType,
-  AppState,
-  CompletionSummary,
-  Goal,
-  ID,
-  Millis,
-  Milestone,
-  Mission,
-  PlanAdjustment,
-  Sprint,
-  SprintSession,
-} from "../domain/types";
+import type { Achievement, ActivityEvent, ActivityType, AppState, CompletionSummary, Goal, ID, Millis, Milestone, Mission, PlanAdjustment, Sprint, SprintSession } from "../domain/types";
 import { newId } from "../domain/ids";
 import { toDay } from "../domain/time";
 import { activeSession, completedSprints, milestoneSprints, missionMilestones, missionProgress, missionSprints } from "../domain/selectors";
@@ -233,7 +219,10 @@ export function reduce(state: AppState, action: Action): AppState {
     case "mission/complete": {
       let next = touchMission(state, action.missionId, action.now, { status: "completed", completedAt: action.now });
       const remaining = missionSprints(next, action.missionId).filter((s) => s.status === "planned");
-      next = putSprints(next, remaining.map((s) => ({ ...s, status: "skipped" as const })));
+      next = putSprints(
+        next,
+        remaining.map((s) => ({ ...s, status: "skipped" as const })),
+      );
       return event(next, "mission_completed", action.now, { missionId: action.missionId });
     }
 
@@ -337,7 +326,8 @@ export function reduce(state: AppState, action: Action): AppState {
       if (!mission) return state;
       const all = missionSprints(state, action.missionId);
       const after = action.afterSprintId ? state.sprints[action.afterSprintId] : all.at(-1);
-      const milestoneId = action.milestoneId ?? after?.milestoneId ?? missionMilestones(state, action.missionId).find((m) => m.status !== "completed")?.id ?? missionMilestones(state, action.missionId).at(-1)?.id;
+      const milestoneId =
+        action.milestoneId ?? after?.milestoneId ?? missionMilestones(state, action.missionId).find((m) => m.status !== "completed")?.id ?? missionMilestones(state, action.missionId).at(-1)?.id;
       if (!milestoneId) return state;
       const order = after ? after.order + 0.5 : all.length;
       const sprint: Sprint = {
@@ -380,7 +370,11 @@ export function reduce(state: AppState, action: Action): AppState {
       const packed = missionSprints(next, sprint.missionId).map((s, i) => ({ ...s, order: i }));
       next = putSprints(next, packed);
       next = event(next, "sprint_split", action.now, { missionId: sprint.missionId, sprintId: sprint.id });
-      return withAdjustments(next, [{ id: newId("adj"), kind: "split", missionId: sprint.missionId, at: action.now, message: `"${sprint.title}" was bigger than expected. I've split it into two smaller sprints.` }], action.now);
+      return withAdjustments(
+        next,
+        [{ id: newId("adj"), kind: "split", missionId: sprint.missionId, at: action.now, message: `"${sprint.title}" was bigger than expected. I've split it into two smaller sprints.` }],
+        action.now,
+      );
     }
 
     case "sprint/followUp": {

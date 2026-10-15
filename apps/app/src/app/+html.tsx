@@ -21,7 +21,12 @@ export default function Root({ children }: PropsWithChildren) {
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
         <ScrollViewStyleReset />
-        <style dangerouslySetInnerHTML={{ __html: "html,body{height:100%;background:#0B0C10}@media (prefers-color-scheme: light){html,body{background:#F7F6F2}}body{overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}#root{display:flex;height:100%}" }} />
+        <style
+          dangerouslySetInnerHTML={{
+            __html:
+              "html,body{height:100%;background:#0B0C10}@media (prefers-color-scheme: light){html,body{background:#F7F6F2}}body{overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}#root{display:flex;height:100%}",
+          }}
+        />
       </head>
       <body>{children}</body>
     </html>

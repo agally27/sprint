@@ -89,7 +89,10 @@ test.describe("Journey 2: long-term goal, missed sprints, reschedule", () => {
     const rows = page.locator('[data-testid^="sprint-row-"]');
     const before = await rows.count();
     // Open a planned sprint long enough to split (20 minutes or more).
-    await page.getByRole("button", { name: /, [2-9]\d minutes, planned$/ }).first().click();
+    await page
+      .getByRole("button", { name: /, [2-9]\d minutes, planned$/ })
+      .first()
+      .click();
     await expect(page.getByTestId("sprint-sheet")).toBeVisible();
     await page.getByTestId("sprint-split").click();
     await expect(rows).toHaveCount(before + 1);

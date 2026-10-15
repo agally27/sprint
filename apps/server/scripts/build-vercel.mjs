@@ -31,12 +31,6 @@ await build({
 });
 
 await writeFile(path.join(func, "package.json"), JSON.stringify({ type: "module" }));
-await writeFile(
-  path.join(func, ".vc-config.json"),
-  JSON.stringify({ runtime: "nodejs22.x", handler: "index.mjs", launcherType: "Nodejs", shouldAddHelpers: false }, null, 2),
-);
-await writeFile(
-  path.join(out, "config.json"),
-  JSON.stringify({ version: 3, routes: [{ src: "^/api(?:/.*)?$", dest: "/api/index" }] }, null, 2),
-);
+await writeFile(path.join(func, ".vc-config.json"), JSON.stringify({ runtime: "nodejs22.x", handler: "index.mjs", launcherType: "Nodejs", shouldAddHelpers: false }, null, 2));
+await writeFile(path.join(out, "config.json"), JSON.stringify({ version: 3, routes: [{ src: "^/api(?:/.*)?$", dest: "/api/index" }] }, null, 2));
 console.log("Built Vercel output at", path.relative(process.cwd(), out));

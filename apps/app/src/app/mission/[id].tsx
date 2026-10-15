@@ -134,13 +134,75 @@ export default function MissionScreen() {
       <Text variant="caption" tone="muted">
         Sprint actions never remove progress you've made.
       </Text>
-      {s.status !== "completed" ? <Button label="Start now" full onPress={() => { setSprintSheet(undefined); startSprint(s.id); }} icon={<Icon name="play" size={14} color={colors.accentText} />} /> : null}
+      {s.status !== "completed" ? (
+        <Button
+          label="Start now"
+          full
+          onPress={() => {
+            setSprintSheet(undefined);
+            startSprint(s.id);
+          }}
+          icon={<Icon name="play" size={14} color={colors.accentText} />}
+        />
+      ) : null}
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
-        {s.status === "planned" ? <Button label="Move to tomorrow" size="sm" variant="secondary" onPress={() => { dispatch({ type: "sprint/reschedule", sprintId: s.id, day: addDays(toDay(Date.now()), 1), now: Date.now() }); setSprintSheet(undefined); }} /> : null}
-        {s.status === "planned" && s.durationMin >= 20 ? <Button label="Split in two" size="sm" variant="secondary" onPress={() => { dispatch({ type: "sprint/split", sprintId: s.id, now: Date.now() }); setSprintSheet(undefined); }} testID="sprint-split" /> : null}
-        {s.status === "planned" ? <Button label="Skip" size="sm" variant="secondary" onPress={() => { dispatch({ type: "sprint/skip", sprintId: s.id, now: Date.now() }); setSprintSheet(undefined); }} testID="sprint-skip" /> : null}
-        {s.status === "skipped" ? <Button label="Put back" size="sm" variant="secondary" onPress={() => { dispatch({ type: "sprint/reschedule", sprintId: s.id, day: toDay(Date.now()), now: Date.now() }); setSprintSheet(undefined); }} /> : null}
-        {s.status !== "active" ? <Button label="Delete" size="sm" variant="danger" onPress={() => { dispatch({ type: "sprint/delete", sprintId: s.id }); setSprintSheet(undefined); }} /> : null}
+        {s.status === "planned" ? (
+          <Button
+            label="Move to tomorrow"
+            size="sm"
+            variant="secondary"
+            onPress={() => {
+              dispatch({ type: "sprint/reschedule", sprintId: s.id, day: addDays(toDay(Date.now()), 1), now: Date.now() });
+              setSprintSheet(undefined);
+            }}
+          />
+        ) : null}
+        {s.status === "planned" && s.durationMin >= 20 ? (
+          <Button
+            label="Split in two"
+            size="sm"
+            variant="secondary"
+            onPress={() => {
+              dispatch({ type: "sprint/split", sprintId: s.id, now: Date.now() });
+              setSprintSheet(undefined);
+            }}
+            testID="sprint-split"
+          />
+        ) : null}
+        {s.status === "planned" ? (
+          <Button
+            label="Skip"
+            size="sm"
+            variant="secondary"
+            onPress={() => {
+              dispatch({ type: "sprint/skip", sprintId: s.id, now: Date.now() });
+              setSprintSheet(undefined);
+            }}
+            testID="sprint-skip"
+          />
+        ) : null}
+        {s.status === "skipped" ? (
+          <Button
+            label="Put back"
+            size="sm"
+            variant="secondary"
+            onPress={() => {
+              dispatch({ type: "sprint/reschedule", sprintId: s.id, day: toDay(Date.now()), now: Date.now() });
+              setSprintSheet(undefined);
+            }}
+          />
+        ) : null}
+        {s.status !== "active" ? (
+          <Button
+            label="Delete"
+            size="sm"
+            variant="danger"
+            onPress={() => {
+              dispatch({ type: "sprint/delete", sprintId: s.id });
+              setSprintSheet(undefined);
+            }}
+          />
+        ) : null}
       </View>
     </View>
   );
@@ -221,7 +283,13 @@ export default function MissionScreen() {
           <View key={ms.id} style={[styles.milestone, { borderColor: colors.line }]} testID={`mission-milestone-${i}`}>
             <View style={styles.milestoneHead}>
               <Ring size={30} progress={sprints.length === 0 ? 0 : doneCount / sprints.length} color={tint} complete={ms.status === "completed"} stroke={3}>
-                {ms.status === "completed" ? <Icon name="check" size={14} color={colors.success} /> : <Text variant="caption" tone="muted">{i + 1}</Text>}
+                {ms.status === "completed" ? (
+                  <Icon name="check" size={14} color={colors.success} />
+                ) : (
+                  <Text variant="caption" tone="muted">
+                    {i + 1}
+                  </Text>
+                )}
               </Ring>
               <View style={{ flex: 1, marginLeft: 12 }}>
                 <Text variant="subheading" tone={ms.status === "completed" ? "muted" : "default"}>
@@ -236,12 +304,33 @@ export default function MissionScreen() {
               ? sprints.map((s) => {
                   const isNext = next?.id === s.id;
                   return (
-                    <Pressable key={s.id} onPress={() => openSprint(s)} style={[styles.sprint, isNext ? { backgroundColor: colors.accentSoft, borderRadius: radius.md } : null]} scaleTo={0.995} accessibilityRole="button" accessibilityLabel={`${s.title}, ${s.durationMin} minutes, ${s.status}`} testID={`sprint-row-${s.id}`}>
-                      <View style={[styles.mark, { borderColor: s.status === "completed" ? colors.success : isNext ? colors.accent : colors.lineStrong, backgroundColor: s.status === "completed" ? colors.success : "transparent" }]}>
+                    <Pressable
+                      key={s.id}
+                      onPress={() => openSprint(s)}
+                      style={[styles.sprint, isNext ? { backgroundColor: colors.accentSoft, borderRadius: radius.md } : null]}
+                      scaleTo={0.995}
+                      accessibilityRole="button"
+                      accessibilityLabel={`${s.title}, ${s.durationMin} minutes, ${s.status}`}
+                      testID={`sprint-row-${s.id}`}
+                    >
+                      <View
+                        style={[
+                          styles.mark,
+                          {
+                            borderColor: s.status === "completed" ? colors.success : isNext ? colors.accent : colors.lineStrong,
+                            backgroundColor: s.status === "completed" ? colors.success : "transparent",
+                          },
+                        ]}
+                      >
                         {s.status === "completed" ? <Icon name="check" size={10} color={colors.bg} strokeWidth={3} /> : null}
                       </View>
                       <View style={{ flex: 1 }}>
-                        <Text variant={isNext ? "bodyStrong" : "body"} tone={s.status === "completed" || s.status === "skipped" ? "muted" : "default"} style={s.status === "skipped" ? { textDecorationLine: "line-through" } : null} numberOfLines={2}>
+                        <Text
+                          variant={isNext ? "bodyStrong" : "body"}
+                          tone={s.status === "completed" || s.status === "skipped" ? "muted" : "default"}
+                          style={s.status === "skipped" ? { textDecorationLine: "line-through" } : null}
+                          numberOfLines={2}
+                        >
                           {s.title}
                         </Text>
                         {isNext ? (
@@ -266,8 +355,27 @@ export default function MissionScreen() {
       })}
 
       <View style={{ marginTop: space.lg, flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-        <Button label="Add a sprint" variant="secondary" size="sm" onPress={() => { setSprintTitle(""); setSprintMinutes(state.preferences.defaultSprintMin); setAdding(true); }} icon={<Icon name="plus" size={14} />} testID="mission-add-sprint" />
-        {!done ? <Button label={paused ? "Resume" : "Pause mission"} variant="secondary" size="sm" onPress={() => dispatch({ type: paused ? "mission/resume" : "mission/pause", missionId: mission.id, now: Date.now() })} testID="mission-pause" /> : null}
+        <Button
+          label="Add a sprint"
+          variant="secondary"
+          size="sm"
+          onPress={() => {
+            setSprintTitle("");
+            setSprintMinutes(state.preferences.defaultSprintMin);
+            setAdding(true);
+          }}
+          icon={<Icon name="plus" size={14} />}
+          testID="mission-add-sprint"
+        />
+        {!done ? (
+          <Button
+            label={paused ? "Resume" : "Pause mission"}
+            variant="secondary"
+            size="sm"
+            onPress={() => dispatch({ type: paused ? "mission/resume" : "mission/pause", missionId: mission.id, now: Date.now() })}
+            testID="mission-pause"
+          />
+        ) : null}
         <Button label="Archive" variant="secondary" size="sm" onPress={() => setConfirm("archive")} testID="mission-archive" />
         <Button label="Delete" variant="danger" size="sm" onPress={() => setConfirm("delete")} testID="mission-delete" />
       </View>
@@ -297,12 +405,32 @@ export default function MissionScreen() {
           Deadline
         </Text>
         <View style={styles.chips}>
-          <Chip label="No deadline" size="sm" selected={deadline === undefined} onPress={() => { setDeadline(undefined); setShowCalendar(false); }} />
-          <Chip label={deadline !== undefined ? formatDeadline(deadline, Date.now()) : "Pick a date"} size="sm" selected={deadline !== undefined} onPress={() => setShowCalendar((v) => !v)} testID="edit-deadline" />
+          <Chip
+            label="No deadline"
+            size="sm"
+            selected={deadline === undefined}
+            onPress={() => {
+              setDeadline(undefined);
+              setShowCalendar(false);
+            }}
+          />
+          <Chip
+            label={deadline !== undefined ? formatDeadline(deadline, Date.now()) : "Pick a date"}
+            size="sm"
+            selected={deadline !== undefined}
+            onPress={() => setShowCalendar((v) => !v)}
+            testID="edit-deadline"
+          />
         </View>
         {showCalendar ? (
           <View style={{ marginTop: space.md }}>
-            <CalendarPicker value={deadline} onChange={(d) => { setDeadline(d); setShowCalendar(false); }} />
+            <CalendarPicker
+              value={deadline}
+              onChange={(d) => {
+                setDeadline(d);
+                setShowCalendar(false);
+              }}
+            />
           </View>
         ) : null}
         <View style={{ flexDirection: "row", justifyContent: "flex-end", marginTop: space.xl, gap: 10 }}>
@@ -314,7 +442,13 @@ export default function MissionScreen() {
       <Sheet visible={!!sprintSheet} onClose={() => setSprintSheet(undefined)} title={sprintSheet?.status === "completed" ? "Completed sprint" : "Sprint"} testID="sprint-sheet">
         {sprintSheet ? (
           <>
-            <TextInput value={sprintTitle} onChangeText={setSprintTitle} style={[styles.input, { color: colors.text, borderColor: colors.line }]} accessibilityLabel="Sprint title" editable={sprintSheet.status !== "completed"} />
+            <TextInput
+              value={sprintTitle}
+              onChangeText={setSprintTitle}
+              style={[styles.input, { color: colors.text, borderColor: colors.line }]}
+              accessibilityLabel="Sprint title"
+              editable={sprintSheet.status !== "completed"}
+            />
             {sprintSheet.status !== "completed" ? (
               <>
                 <Text variant="label" tone="muted" style={{ marginTop: space.lg }}>
@@ -340,7 +474,16 @@ export default function MissionScreen() {
       </Sheet>
 
       <Sheet visible={adding} onClose={() => setAdding(false)} title="Add a sprint" testID="add-sprint">
-        <TextInput value={sprintTitle} onChangeText={setSprintTitle} placeholder="What's the next concrete step?" placeholderTextColor={colors.textFaint} style={[styles.input, { color: colors.text, borderColor: colors.line }]} accessibilityLabel="Sprint title" autoFocus testID="add-sprint-title" />
+        <TextInput
+          value={sprintTitle}
+          onChangeText={setSprintTitle}
+          placeholder="What's the next concrete step?"
+          placeholderTextColor={colors.textFaint}
+          style={[styles.input, { color: colors.text, borderColor: colors.line }]}
+          accessibilityLabel="Sprint title"
+          autoFocus
+          testID="add-sprint-title"
+        />
         <Text variant="label" tone="muted" style={{ marginTop: space.lg }}>
           Length
         </Text>
@@ -361,7 +504,11 @@ export default function MissionScreen() {
         body="It leaves your active list but everything you did is kept in your history."
         confirmLabel="Archive"
         cancelLabel="Keep it"
-        onConfirm={() => { setConfirm(undefined); dispatch({ type: "mission/archive", missionId: mission.id, now: Date.now() }); router.dismissTo("/missions"); }}
+        onConfirm={() => {
+          setConfirm(undefined);
+          dispatch({ type: "mission/archive", missionId: mission.id, now: Date.now() });
+          router.dismissTo("/missions");
+        }}
         onCancel={() => setConfirm(undefined)}
       />
       <Confirm
@@ -371,7 +518,11 @@ export default function MissionScreen() {
         confirmLabel="Delete"
         cancelLabel="Keep it"
         destructive
-        onConfirm={() => { setConfirm(undefined); dispatch({ type: "mission/delete", missionId: mission.id }); router.dismissTo("/missions"); }}
+        onConfirm={() => {
+          setConfirm(undefined);
+          dispatch({ type: "mission/delete", missionId: mission.id });
+          router.dismissTo("/missions");
+        }}
         onCancel={() => setConfirm(undefined)}
       />
     </Screen>

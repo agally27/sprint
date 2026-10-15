@@ -32,7 +32,9 @@ export function createDemoState(now: number): AppState {
   });
 
   // One running sprint done.
-  const runSprint = Object.values(s.sprints).filter((sp) => sp.missionId !== websiteId).sort((a, b) => a.order - b.order)[0];
+  const runSprint = Object.values(s.sprints)
+    .filter((sp) => sp.missionId !== websiteId)
+    .sort((a, b) => a.order - b.order)[0];
   if (runSprint) {
     s = reduce(s, { type: "sprint/start", sprintId: runSprint.id, now: start + 3 * DAY + 4 * HOUR });
     s = reduce(s, { type: "sprint/complete", now: start + 3 * DAY + 4 * HOUR + runSprint.durationMin * 60_000 });

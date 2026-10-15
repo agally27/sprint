@@ -22,11 +22,25 @@ function BottomBar() {
   const pathname = usePathname();
   const router = useRouter();
   return (
-    <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 10), backgroundColor: colors.bgElevated, borderTopColor: colors.line }]} role="tablist" accessibilityRole="tablist" accessibilityLabel="Main">
+    <View
+      style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 10), backgroundColor: colors.bgElevated, borderTopColor: colors.line }]}
+      role="tablist"
+      accessibilityRole="tablist"
+      accessibilityLabel="Main"
+    >
       {TABS.map((t) => {
         const active = pathname.startsWith(t.href);
         return (
-          <Pressable key={t.name} onPress={() => router.navigate(t.href as never)} style={styles.tab} scaleTo={0.94} accessibilityRole="tab" accessibilityState={{ selected: active }} accessibilityLabel={t.label} testID={`tab-${t.name}`}>
+          <Pressable
+            key={t.name}
+            onPress={() => router.navigate(t.href as never)}
+            style={styles.tab}
+            scaleTo={0.94}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: active }}
+            accessibilityLabel={t.label}
+            testID={`tab-${t.name}`}
+          >
             <Icon name={t.icon} size={22} color={active ? colors.text : colors.textFaint} />
             <Text variant="caption" style={{ color: active ? colors.text : colors.textFaint, marginTop: 4, fontFamily: active ? "Manrope_700Bold" : "Manrope_500Medium" }}>
               {t.label}
@@ -49,17 +63,25 @@ function SideRail() {
         <Wordmark size={18} />
       </View>
       <View role="tablist" accessibilityRole="tablist" accessibilityLabel="Main">
-      {TABS.map((t) => {
-        const active = pathname.startsWith(t.href);
-        return (
-          <Pressable key={t.name} onPress={() => router.navigate(t.href as never)} style={[styles.railItem, active ? { backgroundColor: colors.surfaceStrong } : null]} scaleTo={0.98} accessibilityRole="tab" accessibilityState={{ selected: active }} testID={`tab-${t.name}`}>
-            <Icon name={t.icon} size={20} color={active ? colors.text : colors.textMuted} />
-            <Text variant={active ? "bodyStrong" : "body"} tone={active ? "default" : "muted"} style={{ marginLeft: 12 }}>
-              {t.label}
-            </Text>
-          </Pressable>
-        );
-      })}
+        {TABS.map((t) => {
+          const active = pathname.startsWith(t.href);
+          return (
+            <Pressable
+              key={t.name}
+              onPress={() => router.navigate(t.href as never)}
+              style={[styles.railItem, active ? { backgroundColor: colors.surfaceStrong } : null]}
+              scaleTo={0.98}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: active }}
+              testID={`tab-${t.name}`}
+            >
+              <Icon name={t.icon} size={20} color={active ? colors.text : colors.textMuted} />
+              <Text variant={active ? "bodyStrong" : "body"} tone={active ? "default" : "muted"} style={{ marginLeft: 12 }}>
+                {t.label}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
       <View style={{ flex: 1 }} />
       <Pressable onPress={() => router.push("/settings")} style={styles.railItem} scaleTo={0.98} accessibilityRole="button" accessibilityLabel="Settings">

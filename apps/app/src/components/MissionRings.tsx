@@ -20,9 +20,23 @@ export function MissionRings({ missions, state, onAdd }: { missions: Mission[]; 
         const done = m.status === "completed";
         const paused = m.status === "paused";
         return (
-          <Pressable key={m.id} onPress={() => router.push({ pathname: "/mission/[id]", params: { id: m.id } })} style={styles.item} scaleTo={0.96} accessibilityRole="button" accessibilityLabel={`${m.title}, ${Math.round(p.ratio * 100)} percent`} testID={`mission-ring-${m.id}`}>
+          <Pressable
+            key={m.id}
+            onPress={() => router.push({ pathname: "/mission/[id]", params: { id: m.id } })}
+            style={styles.item}
+            scaleTo={0.96}
+            accessibilityRole="button"
+            accessibilityLabel={`${m.title}, ${Math.round(p.ratio * 100)} percent`}
+            testID={`mission-ring-${m.id}`}
+          >
             <Ring size={76} progress={p.ratio} color={paused ? colors.textFaint : categoryColor[m.category]} complete={done} stroke={5}>
-              {done ? <Icon name="check" size={22} color={colors.success} /> : <Text variant="smallStrong" tone={paused ? "faint" : "default"}>{Math.round(p.ratio * 100)}%</Text>}
+              {done ? (
+                <Icon name="check" size={22} color={colors.success} />
+              ) : (
+                <Text variant="smallStrong" tone={paused ? "faint" : "default"}>
+                  {Math.round(p.ratio * 100)}%
+                </Text>
+              )}
             </Ring>
             <Text variant="small" tone={paused ? "faint" : "default"} align="center" numberOfLines={2} style={{ marginTop: 10, width: 96 }}>
               {m.title}

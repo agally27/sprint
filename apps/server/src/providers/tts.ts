@@ -21,7 +21,10 @@ export class NoTTSProvider implements TTSProvider {
 export class ElevenLabsTTSProvider implements TTSProvider {
   readonly name = "elevenlabs";
   readonly available = true;
-  constructor(private readonly env: Env, private readonly fetchImpl: typeof fetch = fetch) {}
+  constructor(
+    private readonly env: Env,
+    private readonly fetchImpl: typeof fetch = fetch,
+  ) {}
 
   async synthesize(text: string, signal?: AbortSignal) {
     const res = await this.fetchImpl(`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(this.env.ELEVENLABS_VOICE_ID)}`, {

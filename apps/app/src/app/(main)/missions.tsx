@@ -34,7 +34,14 @@ function MissionRow({ mission }: { mission: Mission }) {
   const done = mission.status === "completed";
   const tint = paused ? colors.textFaint : categoryColor[mission.category];
   return (
-    <Pressable onPress={() => router.push({ pathname: "/mission/[id]", params: { id: mission.id } })} style={[styles.row, { backgroundColor: colors.surface, borderColor: colors.line }]} scaleTo={0.99} accessibilityRole="button" accessibilityLabel={mission.title} testID={`mission-row-${mission.id}`}>
+    <Pressable
+      onPress={() => router.push({ pathname: "/mission/[id]", params: { id: mission.id } })}
+      style={[styles.row, { backgroundColor: colors.surface, borderColor: colors.line }]}
+      scaleTo={0.99}
+      accessibilityRole="button"
+      accessibilityLabel={mission.title}
+      testID={`mission-row-${mission.id}`}
+    >
       <Ring size={60} progress={p.ratio} color={tint} complete={done} stroke={5}>
         {done ? <Icon name="check" size={20} color={colors.success} /> : <Text variant="caption">{Math.round(p.ratio * 100)}%</Text>}
       </Ring>

@@ -183,7 +183,14 @@ export default function Complete() {
             <Text variant="small" tone="muted" style={{ marginTop: 4 }}>
               One line is plenty. Sprint uses it to shape your next plan.
             </Text>
-            <TextInput value={reflection} onChangeText={setReflection} placeholder="Short mornings, before email." placeholderTextColor={colors.textFaint} style={[styles.input, { color: colors.text, borderColor: colors.line }]} accessibilityLabel="What helped" />
+            <TextInput
+              value={reflection}
+              onChangeText={setReflection}
+              placeholder="Short mornings, before email."
+              placeholderTextColor={colors.textFaint}
+              style={[styles.input, { color: colors.text, borderColor: colors.line }]}
+              accessibilityLabel="What helped"
+            />
             <View style={{ flexDirection: "row", marginTop: space.md }}>
               <Button label="Save" size="sm" onPress={saveReflection} disabled={!reflection.trim()} />
             </View>
@@ -200,7 +207,16 @@ export default function Complete() {
             </View>
             <View style={{ gap: 6 }}>
               <Button label="Allow" size="sm" onPress={requestNotifications} testID="nudge-allow" />
-              <Button label="Not now" size="sm" variant="ghost" onPress={() => { setNotifAsked(true); dispatch({ type: "permissions/set", key: "notifications", state: "denied" }); }} testID="nudge-skip" />
+              <Button
+                label="Not now"
+                size="sm"
+                variant="ghost"
+                onPress={() => {
+                  setNotifAsked(true);
+                  dispatch({ type: "permissions/set", key: "notifications", state: "denied" });
+                }}
+                testID="nudge-skip"
+              />
             </View>
           </View>
         ) : null}
@@ -237,9 +253,7 @@ function Stat({ label, value, accent }: { label: string; value: string; accent?:
   const { colors } = useTheme();
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
-      <Text style={[{ fontFamily: fonts.sansLight, fontSize: 30, lineHeight: 36, letterSpacing: -1 }, accent ? { color: colors.accent } : null]}>
-        {value}
-      </Text>
+      <Text style={[{ fontFamily: fonts.sansLight, fontSize: 30, lineHeight: 36, letterSpacing: -1 }, accent ? { color: colors.accent } : null]}>{value}</Text>
       <Text variant="label" tone="faint" style={{ marginTop: 4 }}>
         {label}
       </Text>

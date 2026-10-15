@@ -27,8 +27,7 @@ export function Button({ label, onPress, variant = "primary", size = "md", disab
   const { colors } = useTheme();
   const heights: Record<Size, number> = { sm: 38, md: 48, lg: 56, xl: 64 };
   const paddings: Record<Size, number> = { sm: 14, md: 20, lg: 26, xl: 32 };
-  const bg =
-    variant === "primary" ? colors.accent : variant === "success" ? colors.success : variant === "secondary" ? colors.surfaceStrong : variant === "danger" ? "transparent" : "transparent";
+  const bg = variant === "primary" ? colors.accent : variant === "success" ? colors.success : variant === "secondary" ? colors.surfaceStrong : variant === "danger" ? "transparent" : "transparent";
   const fg = variant === "primary" ? colors.accentText : variant === "success" ? "#06281A" : variant === "danger" ? colors.danger : colors.text;
   const border = variant === "ghost" ? colors.lineStrong : variant === "danger" ? colors.lineStrong : "transparent";
   return (

@@ -70,7 +70,11 @@ describe("Sprint API", () => {
 
   it("returns a palette visual from the mock image provider", async () => {
     const app = createApp({ env: { NODE_ENV: "test" } });
-    const res = await app.request("/api/image", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ missionTitle: "Run a 10K", objective: "Run a 10K", category: "health" }) });
+    const res = await app.request("/api/image", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ missionTitle: "Run a 10K", objective: "Run a 10K", category: "health" }),
+    });
     expect(res.status).toBe(200);
     const visual = await json(res);
     expect(visual.provider).toBe("mock");
@@ -79,7 +83,11 @@ describe("Sprint API", () => {
 
   it("reflects on a week", async () => {
     const app = createApp({ env: { NODE_ENV: "test" } });
-    const res = await app.request("/api/reflect", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ sprintsCompleted: 11, focusedMinutes: 300, missions: [{ title: "Launch My Website", progress: 0.7, completed: false }], activeDays: 4, now: NOW }) });
+    const res = await app.request("/api/reflect", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ sprintsCompleted: 11, focusedMinutes: 300, missions: [{ title: "Launch My Website", progress: 0.7, completed: false }], activeDays: 4, now: NOW }),
+    });
     expect(res.status).toBe(200);
     expect((await json(res)).text).toMatch(/11 sprints/);
   });

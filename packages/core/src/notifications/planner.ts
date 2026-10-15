@@ -93,7 +93,14 @@ export function planNotifications(state: AppState, now: Millis, timerState?: Tim
           // Already past the two-days-before moment: tomorrow morning, if that's still before the deadline.
           if (at <= now) at = respectQuietHours(dayStart(toDay(now + DAY)) + 9 * HOUR, prefs);
           if (at > now && at < m.deadline) {
-            out.push({ key: `deadline:${m.id}`, kind: "deadline", at, title: `${m.title} is due soon`, body: `${p.remaining} sprint${p.remaining === 1 ? "" : "s"} left. Here's the simplest path forward.`, data: { missionId: m.id } });
+            out.push({
+              key: `deadline:${m.id}`,
+              kind: "deadline",
+              at,
+              title: `${m.title} is due soon`,
+              body: `${p.remaining} sprint${p.remaining === 1 ? "" : "s"} left. Here's the simplest path forward.`,
+              data: { missionId: m.id },
+            });
           }
         }
       }
@@ -102,7 +109,14 @@ export function planNotifications(state: AppState, now: Millis, timerState?: Tim
       if (next && since < 5) {
         const at = respectQuietHours((m.lastActivityAt ?? m.createdAt) + 5 * DAY + 10 * HOUR - ((m.lastActivityAt ?? m.createdAt) % DAY), prefs);
         if (at > now + 30 * MINUTE) {
-          out.push({ key: `stale:${m.id}`, kind: "stale_mission", at, title: m.title, body: `It's been a few days. A ${next.durationMin}-minute sprint would keep it moving. No pressure.`, data: { missionId: m.id } });
+          out.push({
+            key: `stale:${m.id}`,
+            kind: "stale_mission",
+            at,
+            title: m.title,
+            body: `It's been a few days. A ${next.durationMin}-minute sprint would keep it moving. No pressure.`,
+            data: { missionId: m.id },
+          });
         }
       }
     }

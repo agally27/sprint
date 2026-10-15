@@ -38,7 +38,10 @@ describe("AI providers", () => {
           category: "work",
           timeframe: "week",
           explanation: "Two milestones because it's small.",
-          milestones: [{ title: "Do", sprints: [{ title: "Start", durationMin: 15, energy: "focused" }] }, { title: "Finish", sprints: [{ title: "Wrap", durationMin: 10, energy: "light" }] }],
+          milestones: [
+            { title: "Do", sprints: [{ title: "Start", durationMin: 15, energy: "focused" }] },
+            { title: "Finish", sprints: [{ title: "Wrap", durationMin: 10, energy: "light" }] },
+          ],
           source: "ai",
         }),
         { status: 200, headers: { "content-type": "application/json" } },

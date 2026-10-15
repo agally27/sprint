@@ -57,7 +57,8 @@ export class AnthropicAIProvider implements ServerAIProvider {
     const deadline = parsed.deadline ?? req.deadline;
     const timeframe = parsed.deadline ? (parsed.timeframeHint ?? "custom") : req.deadline !== undefined ? "custom" : (req.timeframe ?? "month");
     const horizon = horizonDays(timeframe, deadline, req.now);
-    const dateLine = deadline !== undefined ? `Deadline: ${new Date(deadline).toDateString()} (${horizon} days from today).` : `No fixed deadline. Timeframe: ${timeframe.replace("_", " ")} (about ${horizon} days).`;
+    const dateLine =
+      deadline !== undefined ? `Deadline: ${new Date(deadline).toDateString()} (${horizon} days from today).` : `No fixed deadline. Timeframe: ${timeframe.replace("_", " ")} (about ${horizon} days).`;
 
     const user = [
       `Goal: "${req.goalText}"`,
@@ -118,7 +119,8 @@ export class AnthropicAIProvider implements ServerAIProvider {
         model: this.env.ANTHROPIC_MODEL,
         max_tokens: 400,
         output_config: { effort: "low" },
-        system: "You write one calm, specific sentence (max 30 words) reflecting on a person's week of focused work for the Sprint app. No guilt, no hype, no exclamation marks. Mention the most progressed mission by name.",
+        system:
+          "You write one calm, specific sentence (max 30 words) reflecting on a person's week of focused work for the Sprint app. No guilt, no hype, no exclamation marks. Mention the most progressed mission by name.",
         messages: [{ role: "user", content: JSON.stringify(input) }],
       });
       if (response.stop_reason === "refusal") return this.fallback.reflect(input);

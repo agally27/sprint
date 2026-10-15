@@ -1,14 +1,6 @@
 import type { AppState, ID, Millis } from "../domain/types";
 import { daysUntil, toDay } from "../domain/time";
-import {
-  activeMissions,
-  daysSince,
-  focusedMinutesOn,
-  lastActivityAt,
-  missionHealth,
-  missionProgress,
-  sprintsCompletedOn,
-} from "../domain/selectors";
+import { activeMissions, daysSince, focusedMinutesOn, lastActivityAt, missionHealth, missionProgress, sprintsCompletedOn } from "../domain/selectors";
 import { recommendNext } from "../next/engine";
 
 /**
@@ -16,16 +8,7 @@ import { recommendNext } from "../next/engine";
  * uses guilt. One message at a time, ranked by usefulness.
  */
 
-export type CoachKind =
-  | "welcome_back"
-  | "break"
-  | "ahead"
-  | "deadline"
-  | "stale"
-  | "suggest"
-  | "done_today"
-  | "first_time"
-  | "strong_momentum";
+export type CoachKind = "welcome_back" | "break" | "ahead" | "deadline" | "stale" | "suggest" | "done_today" | "first_time" | "strong_momentum";
 
 export interface CoachMessage {
   kind: CoachKind;
@@ -78,7 +61,8 @@ export function coach(state: AppState, now: Millis): CoachMessage[] {
       if (days <= 3 && p.remaining > 0) {
         out.push({
           kind: "deadline",
-          text: days <= 1 ? `${m.title} is due today. Here's the simplest path: the next sprint.` : `${m.title} is due in ${days - 1} day${days - 1 === 1 ? "" : "s"}. Here's the simplest path forward.`,
+          text:
+            days <= 1 ? `${m.title} is due today. Here's the simplest path: the next sprint.` : `${m.title} is due in ${days - 1} day${days - 1 === 1 ? "" : "s"}. Here's the simplest path forward.`,
           missionId: m.id,
           priority: 85,
         });
@@ -118,19 +102,9 @@ export function topCoachMessage(state: AppState, now: Millis): CoachMessage | un
 }
 
 /** Anti-guilt copy for a missed or expired sprint. */
-export const RESCHEDULE_COPY = [
-  "Life got in the way. Want to reschedule?",
-  "Your plan needs a little more time. Let's adjust.",
-  "Let's make the next step smaller.",
-];
+export const RESCHEDULE_COPY = ["Life got in the way. Want to reschedule?", "Your plan needs a little more time. Let's adjust.", "Let's make the next step smaller."];
 
-export const COMPLETION_COPY = [
-  "You moved the goal forward.",
-  "Another step done.",
-  "Momentum built.",
-  "That's real progress.",
-  "One less thing between you and done.",
-];
+export const COMPLETION_COPY = ["You moved the goal forward.", "Another step done.", "Momentum built.", "That's real progress.", "One less thing between you and done."];
 
 export function completionLine(seed: number): string {
   return COMPLETION_COPY[Math.abs(seed) % COMPLETION_COPY.length] ?? COMPLETION_COPY[0]!;

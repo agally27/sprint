@@ -69,9 +69,7 @@ export function resume(state: TimerState, now: Millis): TimerState {
 export function complete(state: TimerState, now: Millis): TimerState {
   if (state.completedAt !== undefined) return state;
   const t = guard(state, now);
-  const pauses = isPaused(state)
-    ? state.pauses.map((p, i) => (i === state.pauses.length - 1 ? { ...p, resumedAt: t } : p))
-    : state.pauses;
+  const pauses = isPaused(state) ? state.pauses.map((p, i) => (i === state.pauses.length - 1 ? { ...p, resumedAt: t } : p)) : state.pauses;
   return { ...state, pauses, completedAt: t, highWater: t };
 }
 
