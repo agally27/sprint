@@ -1,0 +1,183 @@
+name: Agent
+
+# Unattended backlog work with the official Claude Code GitHub Action.
+#
+# Lifecycle
+#   1. A maintainer labels an issue `agent:ready`.
+#   2. This job swaps the label to `agent:working`, installs the toolchain and
+#      runs Claude Code with the instructions below. The action creates a
+#      tracking comment on the issue, cuts an `agent/issue-<n>-…` branch from
+#      `main` and checks it out. Claude implements, runs `pnpm verify`, pushes
+#      and opens a pull request against `main`.
+#   3. If commits were pushed but no PR was opened, the job opens one.
+#   4. The label becomes `agent:pr-open` (there is a PR to review) or
+#      `agent:needs-human` (the agent escalated a question, ran out of budget
+#      or failed). The tracking comment on the issue has the details.
+#
+# Guard rails: the job only has the permissions listed below; Claude's shell is
+# limited to the allow-listed commands; the branch is cut from `main`; nothing
+# here merges; runs are capped by `timeout-minutes` and `--max-turns`. Branch
+# protection on `main` (a repository setting) is the hard stop against a direct
+# push and must be configured by a human.
+#
+# One-time manual setup (see the "Manual steps" section of CLAUDE.md's PR):
+#   - install the Claude GitHub App on this repository,
+#   - add the ANTHROPIC_API_KEY secret (or CLAUDE_CODE_OAUTH_TOKEN; see below),
+#   - create the agent:* labels (node scripts/backlog/create-issues.mjs --apply),
+#   - protect main.
+
+on:
+  issues:
+    types: [labeled]
+
+# One run per issue at a time; a second label event for the same issue waits.
+concurrency:
+  group: agent-issue-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+permissions: {}
+
+env:
+  # Budget per run. Raise with care: both cost money.
+  AGENT_MAX_TURNS: "80"
+  # Playwright config: empty means "use Playwright's own Chromium" (installed below).
+  PLAYWRIGHT_CHROMIUM_PATH: ""
+
+jobs:
+  implement:
+    name: Implement the issue
+    if: github.event.label.name == 'agent:ready' && github.event.issue.state == 'open'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write # push the agent branch
+      pull-requests: write # open the pull request
+      issues: write # tracking comment and labels
+      id-token: write # the action's GitHub App token exchange
+      actions: read # let Claude read CI results on the PR
+    steps:
+      - name: Mark the issue as picked up
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: gh issue edit "$NUMBER" --repo "$REPO" --remove-label "agent:ready" --add-label "agent:working"
+
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      # pnpm version comes from "packageManager" in package.json.
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies and the e2e browser
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter @sprint/app exec playwright install --with-deps chromium
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Subscription instead of an API key: replace the line above with
+          # claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          #
+          # track_progress forces "tag" mode on this issue event: the action
+          # posts a tracking comment, puts the issue title, body and comments in
+          # the prompt, creates the branch from base_branch and gives Claude the
+          # git add / commit / push tools. The prompt below is appended as
+          # custom instructions.
+          track_progress: true
+          label_trigger: "agent:ready"
+          base_branch: main
+          branch_prefix: "agent/"
+          branch_name_template: "{{prefix}}issue-{{entityNumber}}-{{description}}"
+          prompt: |
+            You are working through the Sprint backlog unattended. The issue above is your task.
+            Repository: ${{ github.repository }}. Issue number: ${{ github.event.issue.number }}. Base branch: main.
+
+            First read CLAUDE.md at the repository root and follow it, including the decision charter in section 7 and the definition of done in section 6. The docs/ folder has the product and architecture detail.
+
+            Environment: dependencies are installed (pnpm 10, Node 22) and Playwright's Chromium is present. A working branch has been created and checked out for you; commit there.
+
+            Work like this:
+            1. Restate the acceptance criteria from the issue in your tracking comment. If a criterion is ambiguous, conflicts with CLAUDE.md, or needs a decision the charter reserves for the owner, do not guess. Post one comment on the issue with `gh issue comment` stating what you understood, your question, the options and your recommendation, then stop without opening a PR.
+            2. Implement in small commits with clear messages. Add or update tests at the lowest layer that can express the behaviour. Update the docs the change affects.
+            3. Run `pnpm verify` and make it pass. If you changed anything under apps/app, also run `pnpm test:e2e` (it serves the web export that `pnpm verify` just built). Never skip, disable or weaken a test to get green.
+            4. Push the branch with the push command the system prompt gives you. Never push to main. Never force-push.
+            5. Open the pull request yourself:
+               gh pr create --base main --head <your branch> --title "<imperative summary>" --body "<body>"
+               The body must contain: Summary; "Closes #${{ github.event.issue.number }}"; Verification (the exact commands you ran and their result); Decisions (anything you decided under the charter and why); Open questions. Put the PR URL in your final tracking comment.
+            6. If you run out of turns or time with verified work on the branch, push it and open the PR anyway, listing what is left. A partial, verified PR beats an unpushed branch.
+
+            Do not: add, remove or upgrade dependencies unless the issue names them; edit anything under .github/ or CLAUDE.md; touch secrets or .env files; change files unrelated to the issue.
+          claude_args: |
+            --max-turns ${{ env.AGENT_MAX_TURNS }}
+            --allowedTools "Bash(pnpm:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git restore:*),Bash(gh pr create:*),Bash(gh pr view:*),Bash(gh pr list:*),Bash(gh issue view:*),Bash(gh issue comment:*)"
+
+      - name: Open the pull request if Claude did not
+        id: pr
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          TITLE: ${{ github.event.issue.title }}
+          CLAUDE_BRANCH: ${{ steps.claude.outputs.branch_name }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          branch="$CLAUDE_BRANCH"
+          if [ -z "$branch" ]; then
+            branch="$(git ls-remote --heads origin "agent/issue-${NUMBER}-*" | awk '{print $2}' | sed 's#^refs/heads/##' | tail -n 1 || true)"
+          fi
+          if [ -z "$branch" ]; then
+            echo "No agent branch for issue #$NUMBER."
+            echo "outcome=none" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if ! git fetch origin "$branch" "main"; then
+            echo "Branch $branch was never pushed."
+            echo "outcome=none" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ "$(git rev-list --count "origin/main..origin/$branch")" = "0" ]; then
+            echo "Branch $branch has no commits beyond main."
+            echo "outcome=none" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          existing="$(gh pr list --repo "$REPO" --head "$branch" --state open --json number --jq '.[0].number // empty')"
+          if [ -n "$existing" ]; then
+            echo "PR #$existing is already open for $branch."
+            echo "outcome=pr" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Opened with GITHUB_TOKEN, so this PR does not fire pull_request workflows;
+          # CI already ran on the push (ci.yml listens to push on every branch).
+          body="$(printf 'Opened by the Agent workflow because the run pushed commits without opening a pull request. The tracking comment on the issue says what was done and what was verified.\n\nCloses #%s\n\nRun: %s' "$NUMBER" "$RUN_URL")"
+          gh pr create --repo "$REPO" --base main --head "$branch" --title "$TITLE" --body "$body"
+          echo "outcome=pr" >> "$GITHUB_OUTPUT"
+
+      - name: Update the issue label
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          OUTCOME: ${{ steps.pr.outputs.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ "$OUTCOME" = "pr" ]; then
+            next="agent:pr-open"
+          else
+            next="agent:needs-human"
+            gh issue comment "$NUMBER" --repo "$REPO" --body "The agent run ended without a pull request. The tracking comment above has its question or the reason; the run log is at $RUN_URL. Answer in this issue and add the agent:ready label to run again."
+          fi
+          gh issue edit "$NUMBER" --repo "$REPO" --remove-label "agent:working" || true
+          gh issue edit "$NUMBER" --repo "$REPO" --add-label "$next"

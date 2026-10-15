@@ -1,0 +1,42 @@
+name: Agent task
+description: A unit of work an unattended Claude Code run can finish in one pull request.
+title: ""
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One issue is one pull request, finishable in roughly 45 minutes of agent time. Write it so a careful colleague with no context could start. When it is ready to run, add the `agent:ready` label; the Agent workflow picks it up from there.
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why this matters and where it fits. Link the roadmap item, the screens, the files.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What is in, and what is explicitly out.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Checkable statements. Each one must be verifiable by a test, by `pnpm verify`, or by a reviewer reading the PR.
+      value: |
+        - [ ]
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification
+      description: Tests to add or run beyond `pnpm verify` (for example a journey in apps/app/e2e, or a manual check the reviewer should do).
+  - type: textarea
+    id: decisions
+    attributes:
+      label: Decisions already made
+      description: Anything the agent would otherwise have to escalate under the CLAUDE.md charter, such as a dependency it may add, a provider to use, or a copy line to use.
