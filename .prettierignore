@@ -1,0 +1,14 @@
+# Generated or managed elsewhere
+node_modules
+dist
+.expo
+.vercel
+build
+coverage
+test-results
+playwright-report
+pnpm-lock.yaml
+
+# Expo and pnpm own the manifests; docs keep their hand-written layout.
+*.json
+*.md

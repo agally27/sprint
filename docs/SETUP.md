@@ -38,9 +38,11 @@ Client code only ever reads `EXPO_PUBLIC_*`. Keys never ship in the bundle.
 ## Tests
 
 ```bash
+pnpm verify                       # the gate: format check, typecheck, unit tests, API bundle smoke, web export
+pnpm format                       # Prettier (printWidth 200; Markdown and JSON are left alone)
 pnpm test                         # core (vitest) + server (vitest)
 pnpm typecheck
-pnpm build:web && pnpm test:e2e   # Playwright journeys + axe accessibility scan against apps/app/dist
+pnpm test:e2e                     # Playwright journeys + axe accessibility scan against apps/app/dist (run pnpm verify or pnpm build:web first)
 SHOTS=1 pnpm --filter @sprint/app exec playwright test e2e/visual.spec.ts   # screenshots to test-results/shots
 ```
 

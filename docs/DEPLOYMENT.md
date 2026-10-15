@@ -50,4 +50,4 @@ Checklist before submission:
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` runs typecheck, unit tests, the web export and the Playwright journeys on every push and pull request.
+`.github/workflows/ci.yml` runs `pnpm verify` (format check, typecheck, unit tests, the API bundled and smoke-tested, the web export) and then the Playwright journeys on every push and pull request. `.github/workflows/agent.yml` runs the Claude Code GitHub Action on issues labelled `agent:ready`; see [CLAUDE.md](../CLAUDE.md).

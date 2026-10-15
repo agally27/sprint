@@ -30,8 +30,8 @@ pnpm install
 pnpm web            # web dev server (apps/app)
 pnpm app            # Expo dev server for iOS / Android
 pnpm server         # API on http://localhost:8787 (optional; the app runs without it)
-pnpm test           # unit + journey tests in core and server
-pnpm build:web && pnpm test:e2e   # Playwright journeys against the static web build
+pnpm verify         # the gate: format, typecheck, unit tests, API bundle smoke, web export
+pnpm test:e2e       # Playwright journeys against the web export (after pnpm verify)
 ```
 
 No environment variables are required. See [docs/SETUP.md](docs/SETUP.md) for the optional ones (Anthropic planning, ElevenLabs voice, API token) and [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for Vercel and EAS.
@@ -48,6 +48,10 @@ No environment variables are required. See [docs/SETUP.md](docs/SETUP.md) for th
 | [docs/SETUP.md](docs/SETUP.md) | Local development, environment, tests |
 | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Web (Vercel), API (Vercel/Node), mobile (EAS) |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | What's next, in order |
+
+## Working on Sprint
+
+[CLAUDE.md](CLAUDE.md) is the contract for every change: architecture rules, conventions, the `pnpm verify` gate, the definition of done, and the decision charter for unattended work. Backlog issues that carry the `agent:ready` label are picked up by the Agent workflow (`.github/workflows/agent.yml`), which implements them on a branch and opens a pull request for review.
 
 ## Status
 

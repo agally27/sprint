@@ -2,7 +2,7 @@
   "name": "sprint",
   "private": true,
   "version": "0.1.0",
-  "description": "Sprint \u2014 turn goals into momentum.",
+  "description": "Sprint — turn goals into momentum.",
   "packageManager": "pnpm@10.28.0",
   "engines": {
     "node": ">=20"
@@ -15,11 +15,15 @@
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
     "test:e2e": "pnpm --filter @sprint/app exec playwright test e2e/journeys.spec.ts e2e/a11y.spec.ts",
-    "shots": "SHOTS=1 pnpm --filter @sprint/app exec playwright test e2e/visual.spec.ts"
+    "shots": "SHOTS=1 pnpm --filter @sprint/app exec playwright test e2e/visual.spec.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "pnpm format:check && pnpm typecheck && pnpm test && pnpm --filter @sprint/server build:vercel && pnpm --filter @sprint/server smoke:vercel && pnpm build:web"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "1.63.0",
+    "prettier": "3.6.2",
     "serve": "^14.2.6"
   }
 }
