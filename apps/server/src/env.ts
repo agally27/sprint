@@ -13,7 +13,7 @@ const EnvSchema = z.object({
   SPRINT_API_TOKEN: z.string().optional(),
   /** Anthropic planning. */
   ANTHROPIC_API_KEY: z.string().optional(),
-  ANTHROPIC_MODEL: z.string().default("claude-opus-5-5"),
+  ANTHROPIC_MODEL: z.string().default("claude-sonnet-5-5"),
   /** ElevenLabs voice. */
   ELEVENLABS_API_KEY: z.string().optional(),
   ELEVENLABS_VOICE_ID: z.string().default("21m00Tcm4TlvDq8ikWAM"),

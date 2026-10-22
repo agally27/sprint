@@ -27,7 +27,7 @@ cp apps/server/.env.example apps/server/.env # ANTHROPIC_API_KEY, ELEVENLABS_API
 | `EXPO_PUBLIC_API_URL` | app | Plans and reflections go through the API (with local fallback) |
 | `EXPO_PUBLIC_AI_MODE=local` | app | Never call the API even if a URL is set |
 | `ANTHROPIC_API_KEY` | server | Plans from Claude via structured outputs |
-| `ANTHROPIC_MODEL` | server | Defaults to `claude-opus-5-5` |
+| `ANTHROPIC_MODEL` | server | Defaults to `claude-sonnet-5-5` |
 | `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID` | server | `/api/tts` synthesises speech |
 | `SPRINT_API_TOKEN` | server | Requires `Authorization: Bearer …` on every `/api/*` call |
 | `CORS_ORIGINS` | server | Comma-separated origins, default `*` |

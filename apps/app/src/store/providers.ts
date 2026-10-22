@@ -19,7 +19,7 @@ import { voice } from "@/platform/voice";
  * Everything is swappable; nothing here is required for the core loop.
  */
 export const localAI: AIProvider = new LocalAIProvider({ latencyMs: 900 });
-export const remoteAI: AIProvider | undefined = hasRemoteAI ? new RemoteAIProvider({ baseUrl: config.apiUrl, timeoutMs: 15_000 }) : undefined;
+export const remoteAI: AIProvider | undefined = hasRemoteAI ? new RemoteAIProvider({ baseUrl: config.apiUrl, timeoutMs: 30_000 }) : undefined;
 
 export const providers: Providers = {
   ai: remoteAI ?? localAI,

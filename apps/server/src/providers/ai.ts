@@ -49,7 +49,7 @@ export class AnthropicAIProvider implements ServerAIProvider {
   private readonly fallback = new LocalServerAIProvider();
 
   constructor(private readonly env: Env) {
-    this.client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, timeout: 40_000, maxRetries: 1 });
+    this.client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, timeout: 28_000, maxRetries: 1 });
   }
 
   async plan(req: PlanRequestInput): Promise<PlanDraft> {

@@ -33,7 +33,7 @@ await build({
 await writeFile(path.join(func, "package.json"), JSON.stringify({ type: "module" }));
 await writeFile(
   path.join(func, ".vc-config.json"),
-  JSON.stringify({ runtime: "nodejs22.x", handler: "index.mjs", launcherType: "Nodejs", shouldAddHelpers: false }, null, 2),
+  JSON.stringify({ runtime: "nodejs22.x", handler: "index.mjs", launcherType: "Nodejs", shouldAddHelpers: false, maxDuration: 60 }, null, 2),
 );
 await writeFile(
   path.join(out, "config.json"),

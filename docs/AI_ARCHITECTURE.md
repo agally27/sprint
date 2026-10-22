@@ -26,7 +26,7 @@ Each archetype has a hand-written playbook: milestones with concrete sprint acti
 
 ### Remote planner (`apps/server/src/providers/ai.ts`)
 
-Uses the Anthropic SDK with structured outputs (`messages.parse` + a zod schema), so the model can only return a valid plan. The prompt encodes Sprint's rules: concrete actions, 5–90 minute sprints, 3–6 milestones, time-aware, no guilt, one clarifying question only when it changes the plan. Deadlines are still parsed locally and passed as constraints. On refusal, invalid output, timeout or any API error the server returns the local plan. Model and effort are configurable (`ANTHROPIC_MODEL`).
+Uses the Anthropic SDK with structured outputs (`messages.parse` + a zod schema), so the model can only return a valid plan. The prompt encodes Sprint's rules: concrete actions, 5–90 minute sprints, 3–6 milestones, time-aware, no guilt, one clarifying question only when it changes the plan. Deadlines are still parsed locally and passed as constraints. On refusal, invalid output, timeout or any API error the server returns the local plan. Model and effort are configurable (`ANTHROPIC_MODEL`, default `claude-sonnet-5-5` for plan latency; set `claude-opus-5-5` for deeper plans). The server gives up after 28 s and the app after 30 s, then uses the local plan.
 
 ### Next action, coach, adaptation, review
 
