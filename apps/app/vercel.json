@@ -31,7 +31,7 @@
   "rewrites": [
     {
       "source": "/mission/:id",
-      "destination": "/mission/[id].html"
+      "destination": "/mission-shell"
     }
   ]
 }
